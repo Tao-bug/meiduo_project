@@ -152,7 +152,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 CACHES = {
     # 0
-    "default": { # 默认
+    "default": {  # 默认
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/0",
         "OPTIONS": {
@@ -160,7 +160,7 @@ CACHES = {
         }
     },
     # 1
-    "session": { # session
+    "session": {  # session
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/1",
         "OPTIONS": {
