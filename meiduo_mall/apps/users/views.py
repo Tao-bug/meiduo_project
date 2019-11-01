@@ -1,12 +1,14 @@
 import re
 
 from django import http
-from django.db import DatabaseError
+
 
 from django.shortcuts import render, redirect
 
 # Create your views here.
+from django.urls import reverse
 from django.views import View
+from pymysql import DatabaseError
 
 from apps.users.models import User
 
@@ -49,15 +51,15 @@ class RegisterView(View):
 
         # 注册用户
         try:
-            User.objects.create_user(username=username, password=password, mobile=mobile)
+            user = User.objects.create_user(username=username, password=password, mobile=mobile)
         except DatabaseError:
             return render(request, 'register.html', {'register_errmsg': '注册失败'})
 
-        # 响应注册结果
-        return http.HttpResponse('注册成功，重定向到首页')
-
         # 保持登陆状态
+        from django.contrib.auth import login
+        login(request, user)
 
         # 跳转首页 redirect(reverse())
-        return redirect('/')
+        # return redirect('/')
+        return redirect(reverse('contents:index'))
 
