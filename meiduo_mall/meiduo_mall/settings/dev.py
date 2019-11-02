@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'apps.users',
     'apps.contents',
+    'apps.verifications',
 ]
 
 MIDDLEWARE = [
@@ -168,6 +169,23 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
+    # 2
+    "verify_image_code": {  # 保存图片验证码--2号库
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/2",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    # 3
+    "sms_code": {  # 保存短信验证码--3号库
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "redis://127.0.0.1:6379/3",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
+        },
+
 }
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "session"
