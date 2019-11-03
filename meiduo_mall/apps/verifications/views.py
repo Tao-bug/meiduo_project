@@ -40,6 +40,13 @@ class SMSCodeView(View):
         sms_code = "%06d" % randint(0, 999999)
         sms_redis_client = get_redis_connection('sms_code')
         sms_redis_client.setex("sms_%s" % mobile, 300, sms_code)
+        sms_redis_client.setex('send_flag%d' % mobile, 60, 1)
+
+        # 获取redis里面的标识
+        send_sms_flag = sms_redis_client.get('send_flag%d' % mobile)
+        if send_sms_flag:
+            return http.HttpResponseForbidden({'发送短信过于频繁'})
+        # 如果 倒计时标识 不在
 
         # 4.让第三方 容联云-给手机号-发送短信
         from libs.yuntongxun.sms import CCP

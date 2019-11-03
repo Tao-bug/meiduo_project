@@ -52,7 +52,7 @@ class RegisterView(View):
         password2 = data.get('password2')
         mobile = data.get('mobile')
         # 短信验证码
-        # sms_code = request.POST.get('sms_code')
+        sms_code = request.POST.get('sms_code')
         allow = data.get('allow')
 
         # 判断参数是否齐全
@@ -73,6 +73,17 @@ class RegisterView(View):
         # 判断是否勾选用户协议
         if allow != 'on':
             return http.HttpResponseForbidden('请勾选用户协议')
+
+        # 补充注册时短信验证后端逻辑
+        from django_redis import get_redis_connection
+        redis_code_client = get_redis_connection('sms_code')
+        redis_code = redis_code_client.get("sms_%s" % mobile)
+
+        if redis_code is None:
+            return render(request, 'register.html', {'sms_code_errmsg': '无效的短信验证码'})
+
+        if sms_code != redis_code.decode():
+            return render(request, 'register.html', {'sms_code_errmsg': '输入短信验证码有误'})
 
         # 注册用户
         try:
