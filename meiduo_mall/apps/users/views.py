@@ -1,11 +1,55 @@
 import re
 from django import http
+from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 from pymysql import DatabaseError
 from apps.users.models import User
 from utils.response_code import RETCODE
+from django.contrib.auth import authenticate, login
+
+
+# 用户登陆面显示
+class LoginView(View):
+    # 登陆页面显示
+    def get(self, request):
+        return render(request, 'login.html')
+
+    def post(self,request):
+        # 接收参数 : username password 记住登录
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        remembered = request.POST.get('remembered')
+
+        # 校验参数
+        if not all([username, password]):
+            return HttpResponseForbidden('参数不齐全')
+        #  用户名
+        if not re.match(r'^[a-zA-Z0-9_-]{5,20}$', username):
+            return HttpResponseForbidden('请输入5-20个字符的用户名')
+        #  密码
+        if not re.match(r'^[0-9A-Za-z]{8,20}$', password):
+            return HttpResponseForbidden('请输入8-20位的密码')
+
+        # 验证用户名和密码--django自带的认证
+        user = authenticate(username=username, password=password)
+        if user is None:
+            return render(request, 'login.html', {'account_errmsg': '用户名或密码错误'})
+        # 4.保持登录状态
+        login(request, user)
+
+        # 5.是否记住用户名
+        if remembered != 'on':
+            # 不记住用户名, 浏览器结束会话就过期
+            request.session.set_expiry(0)
+        else:
+            # 记住用户名, 浏览器会话保持两周
+            request.session.set_expiry(None)
+
+        # 6.返回响应结果
+        return redirect(reverse('contents:index'))
+
 
 
 class MobileCountView(View):
