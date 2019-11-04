@@ -1,5 +1,6 @@
 import re
 from django import http
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -11,7 +12,7 @@ from django.contrib.auth import authenticate, login, logout
 
 
 # 用户中心
-class UserInfoView(View):
+class UserInfoView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, 'user_center_info.html')
 
@@ -69,12 +70,17 @@ class LoginView(View):
             # 记住用户名, 浏览器会话保持两周
             request.session.set_expiry(None)
 
-        response = redirect(reverse('contents:index'))
+        # next 获取
+        next = request.GET.get('next')
+        if next:
+            response = redirect(reverse('contents:info'))
+
+        else:
+            response = redirect(reverse('contents:index'))
         response.set_cookie("username", user.username, max_age=14 * 3600 * 24)
 
         # 6.返回响应结果 跳转首页
         return response
-
 
 
 class MobileCountView(View):
