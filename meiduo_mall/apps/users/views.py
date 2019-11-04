@@ -7,7 +7,23 @@ from django.views import View
 from pymysql import DatabaseError
 from apps.users.models import User
 from utils.response_code import RETCODE
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+
+
+# 退出登陆
+class LogoutView(View):
+    """退出登录"""
+
+    def get(self, request):
+        """实现退出登录逻辑"""
+        # 清理session
+        logout(request)
+        # 退出登录，重定向到登录页
+        response = redirect(reverse('contents:index'))
+        # 退出登录时清除cookie中的username
+        response.delete_cookie('username')
+
+        return response
 
 
 # 用户登陆面显示
