@@ -48,7 +48,7 @@ class LoginView(View):
             request.session.set_expiry(None)
 
         response = redirect(reverse('contents:index'))
-        response.set_cookie("username", username, max_age=14 * 3600 * 24)
+        response.set_cookie("username", user.username, max_age=14 * 3600 * 24)
 
         # 6.返回响应结果 跳转首页
         return response
