@@ -3,6 +3,7 @@ import re
 from .models import User
 
 
+# 封装函数
 def get_user_by_account(account):
     """
     根据account查询用户
