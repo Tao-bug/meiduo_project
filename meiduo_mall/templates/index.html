@@ -1,6 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
+    <style>
+        .login_btn em{
+            color:orange;
+        }
+    </style>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<title>美多商城-首页</title>
 	<link rel="stylesheet" type="text/css" href="../static/css/reset.css">
@@ -17,18 +22,19 @@
 		<div class="header">
 			<div class="welcome fl">欢迎来到美多商城!</div>
 			<div class="fr">
-				<div class="login_info fl">
-					欢迎您：<em>张 山</em>
-					<a href="javascript:;" class="quit">退出</a>
-				</div>
-				<div class="login_btn fl">
-					<a href="../static/login.html">登录</a>
-					<span>|</span>
-					<a href="register.html">注册</a>
-				</div>
+				<div v-if="username" class="login_btn fl">
+                    欢迎您：<em>[[ username ]]</em>
+                    <span>|</span>
+                    <a href="#">退出</a>
+                </div>
+                <div v-else class="login_btn fl">
+                    <a href="login.html">登录</a>
+                    <span>|</span>
+                    <a href="register.html">注册</a>
+                </div>
 				<div class="user_link fl">
 					<span>|</span>
-					<a href="../static/user_center_info.html">用户中心</a>
+					<a href="">用户中心</a>
 					<span>|</span>
 					<a href="../static/cart.html">我的购物车</a>
 					<span>|</span>

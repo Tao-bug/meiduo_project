@@ -52,6 +52,7 @@ class SMSCodeView(View):
         from celery_tasks.sms.tasks import ccp_send_sms_code
         ccp_send_sms_code.delay(mobile, sms_code)
         print("当前验证码是:", sms_code)
+        # (异步发短信)
 
 
         # 管道
