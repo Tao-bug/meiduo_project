@@ -73,7 +73,7 @@ class LoginView(View):
         # next 获取
         next = request.GET.get('next')
         if next:
-            response = redirect(reverse('contents:info'))
+            response = redirect(reverse('users:info'))
 
         else:
             response = redirect(reverse('contents:index'))
