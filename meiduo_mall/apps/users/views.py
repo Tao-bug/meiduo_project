@@ -10,6 +10,12 @@ from utils.response_code import RETCODE
 from django.contrib.auth import authenticate, login, logout
 
 
+# 用户中心
+class UserInfoView(View):
+    def get(self, request):
+        return render(request, 'user_center_info.html')
+
+
 # 退出登陆
 class LogoutView(View):
     """退出登录"""

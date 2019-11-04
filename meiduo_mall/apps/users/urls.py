@@ -15,4 +15,7 @@ urlpatterns = [
 
     # 退出登陆
     url(r'^logout/$', views.LogoutView.as_view()),
+
+    # 用户中心 info/
+    url(r'^info/$', views.UserInfoView.as_view()),
 ]
