@@ -1,13 +1,9 @@
 import re
-
 from django import http
 from django.shortcuts import render, redirect
-
-# Create your views here.
 from django.urls import reverse
 from django.views import View
 from pymysql import DatabaseError
-
 from apps.users.models import User
 from utils.response_code import RETCODE
 
@@ -52,7 +48,7 @@ class RegisterView(View):
         password2 = data.get('password2')
         mobile = data.get('mobile')
         # 短信验证码
-        sms_code = request.POST.get('sms_code')
+        sms_code = request.POST.get('msg_code')
         allow = data.get('allow')
 
         # 判断参数是否齐全
@@ -80,16 +76,16 @@ class RegisterView(View):
         redis_code = redis_code_client.get("sms_%s" % mobile)
 
         if redis_code is None:
-            return render(request, 'register.html', {'sms_code_errmsg': '无效的短信验证码'})
+            return http.HttpResponseForbidden('无效的短信验证码')
 
         if sms_code != redis_code.decode():
-            return render(request, 'register.html', {'sms_code_errmsg': '输入短信验证码有误'})
+            return http.HttpResponseForbidden('输入短信验证码有误')
 
         # 注册用户
         try:
             user = User.objects.create_user(username=username, password=password, mobile=mobile)
         except DatabaseError:
-            return render(request, 'register.html', {'register_errmsg': '注册失败'})
+            return http.HttpResponseForbidden('注册失败')
 
         # 保持登陆状态
         from django.contrib.auth import login
