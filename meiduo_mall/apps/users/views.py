@@ -47,8 +47,11 @@ class LoginView(View):
             # 记住用户名, 浏览器会话保持两周
             request.session.set_expiry(None)
 
-        # 6.返回响应结果
-        return redirect(reverse('contents:index'))
+        response = redirect(reverse('contents:index'))
+        response.set_cookie("username", username, max_age=14 * 3600 * 24)
+
+        # 6.返回响应结果 跳转首页
+        return response
 
 
 
