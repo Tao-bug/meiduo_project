@@ -73,7 +73,7 @@
         <li><span>用户名：</span>[[ username ]]</li>
         <li><span>联系方式：</span>[[ mobile ]]</li>
         <li>
-            <span>Email：</span>
+            <span>Email：[[ email ]]</span>
             <div v-if="set_email">
                 <input v-model="email" @blur="check_email" type="email" name="email" class="email">
                 <input @click="save_email" type="button" name="" value="保 存">

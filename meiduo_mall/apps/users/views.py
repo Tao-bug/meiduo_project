@@ -14,7 +14,14 @@ from django.contrib.auth import authenticate, login, logout
 # 用户中心
 class UserInfoView(LoginRequiredMixin, View):
     def get(self, request):
-        return render(request, 'user_center_info.html')
+        """提供个人信息界面"""
+        context = {
+            'username': request.user.username,
+            'mobile': request.user.mobile,
+            'email': request.user.email,
+            'email_active': request.user.email_active
+        }
+        return render(request, 'user_center_info.html', context=context)
 
 
 # 退出登陆
