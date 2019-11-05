@@ -1,3 +1,5 @@
+import re
+
 from QQLoginTool.QQtool import OAuthQQ
 from django import http
 from django.conf import settings
@@ -5,17 +7,22 @@ from django.contrib.auth import login
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
+from django_redis import get_redis_connection
+
 from apps.oauth.models import OAuthQQUser
 
 
 # 判断是否绑定
+from apps.users.models import User
+
+
 def is_bind_openid(openid, request):
     # 绑定过----首页
     try:
         qq_user = OAuthQQUser.objects.get(openid=openid)
     except OAuthQQUser.DoesNotExist:
         # 未绑定---绑定页面
-        return render(request, 'oauth_callback.html')
+        return render(request, 'oauth_callback.html', {'openid': openid})
     else:
         user = qq_user.user
         # 绑定---首页
@@ -26,14 +33,14 @@ def is_bind_openid(openid, request):
         response = redirect(reverse("contents:index"))
 
         # 设置cookie
-        response.set_cookie('username', user.username, max_ge=14*24*3600)
+        response.set_cookie('username', user.username, max_age=14*24*3600)
 
         return response
 
 
 # 用户扫码登录的回调处理QQAuthUserView
-# code--token--openid--是否绑定
 class QQAuthCallBackView(View):
+    # code--token--openid--是否绑定
     def get(self, request):
         # / oauth_callback?code = 31FFB8402D24214889BA444821D3CC3E & state = % 2Finfo % 2F
         # 1.解析code
@@ -59,6 +66,63 @@ class QQAuthCallBackView(View):
         # 是否绑定
         response = is_bind_openid(openid, request)
 
+        return response
+
+    # 提交绑定信息
+    def post(self, request):
+        # 解析参数
+        mobile = request.POST.get('mobile')
+        pwd = request.POST.get('password')
+        sms_code = request.POST.get('sms_code')
+        openid = request.POST.get('openid')
+
+        # 校验
+        # 判断参数是否齐全
+        if not all([mobile, pwd, sms_code]):
+            return http.HttpResponseForbidden('缺少必传参数')
+        # 判断手机号是否合法
+        if not re.match(r'^1[3-9]\d{9}$', mobile):
+            return http.HttpResponseForbidden('请输入正确的手机号码')
+        # 判断密码是否合格
+        if not re.match(r'^[0-9A-Za-z]{8,20}$', pwd):
+            return http.HttpResponseForbidden('请输入8-20位的密码')
+        # 判断短信验证码是否一致
+        # redis_conn = get_redis_connection('verify_code')
+        # sms_code_server = redis_conn.get('sms_%s' % mobile)
+        # if sms_code_server is None:
+        #     return render(request, 'oauth_callback.html', {'sms_code_errmsg': '无效的短信验证码'})
+        # if sms_code != sms_code_server.decode():
+        #     return render(request, 'oauth_callback.html', {'sms_code_errmsg': '输入短信验证码有误'})
+
+        # 解密出openid 再判断openid是否有效
+        if not openid:
+            return render(request, 'oauth_allback.hml', {'openid_errmsg': '无效的openid'})
+
+        # 判断用户是否存在
+        try:
+            user = User.objects.get(mobile=mobile)
+        except User.DoesNotExist:
+            # 不存在----创建新用户
+            user = User.objects.create_user(username=mobile, password=pwd, mobile=mobile)
+        else:
+            # 存在---校验密码
+            if not user.check_password(pwd):
+                return render(request, 'oauth_callback.html', {'account_errmsg': '用户名或密码错误'})
+
+        # 绑定openid
+        try:
+            OAuthQQUser.objects.create(user=user, openid=openid)
+        except Exception as e:
+            return render(request, 'oauth_callback.html', {'qq_login_errmsg': 'QQ绑定失败'})
+
+        # 保持登陆状态--设置cookie首页用户名-- 首页
+        login(request, user)
+
+        # 重定向首页
+        response = redirect(reverse("contents:index"))
+
+        # 设置cookie
+        response.set_cookie('username', user.username, max_age=14 * 24 * 3600)
         return response
 
 
