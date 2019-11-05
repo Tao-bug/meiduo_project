@@ -1,5 +1,4 @@
 import re
-
 from QQLoginTool.QQtool import OAuthQQ
 from django import http
 from django.conf import settings
@@ -7,21 +6,20 @@ from django.contrib.auth import login
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
-from django_redis import get_redis_connection
-
 from apps.oauth.models import OAuthQQUser
+from apps.users.models import User
+from utils.secret import SecretOauth
 
 
 # 判断是否绑定
-from apps.users.models import User
-
-
 def is_bind_openid(openid, request):
     # 绑定过----首页
     try:
         qq_user = OAuthQQUser.objects.get(openid=openid)
     except OAuthQQUser.DoesNotExist:
         # 未绑定---绑定页面
+        # 给前端的数据加密
+        openid = SecretOauth().dumps({'openid': openid})
         return render(request, 'oauth_callback.html', {'openid': openid})
     else:
         user = qq_user.user
@@ -95,6 +93,8 @@ class QQAuthCallBackView(View):
         #     return render(request, 'oauth_callback.html', {'sms_code_errmsg': '输入短信验证码有误'})
 
         # 解密出openid 再判断openid是否有效
+        locals_openid_dict = SecretOauth().loads(openid)
+        openid = locals_openid_dict.get('openid')
         if not openid:
             return render(request, 'oauth_allback.hml', {'openid_errmsg': '无效的openid'})
 
