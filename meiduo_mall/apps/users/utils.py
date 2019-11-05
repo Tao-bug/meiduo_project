@@ -1,7 +1,22 @@
+from django.conf import settings
 from django.contrib.auth.backends import ModelBackend
 import re
 from .models import User
 
+
+# 生成 激活 链接
+def generate_verify_email_url(user):
+    # 1. user_id email
+    dict_data = {'user_id': user.id, 'email': user.email}
+
+    # 2.参数加密
+    from utils.secret import SecretOauth
+    secret_data = SecretOauth().dumps(dict_data)
+
+    # 3.拼接 完整的路由
+    verify_url = settings.EMAIL_ACTIVE_URL + '?token=' + secret_data
+
+    return verify_url
 
 # 封装函数
 def get_user_by_account(account):

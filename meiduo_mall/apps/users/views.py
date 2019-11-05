@@ -35,6 +35,13 @@ class EmailView(LoginRequiredMixin, View):
             logger.error(e)
             return http.JsonResponse({'code': RETCODE.DBERR, 'errmsg': '添加邮箱失败'})
 
+        # 发邮件功能
+        from apps.users.utils import generate_verify_email_url
+        verify_url = generate_verify_email_url(request.user)
+
+        from celery_tasks.email.tasks import send_verify_email
+        send_verify_email.delay(email, verify_url)
+
         # 响应添加邮箱结果
         return http.JsonResponse({'code': RETCODE.OK, 'errmsg': '添加邮箱成功'})
 
