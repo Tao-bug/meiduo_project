@@ -1,8 +1,34 @@
 from QQLoginTool.QQtool import OAuthQQ
 from django import http
 from django.conf import settings
-from django.shortcuts import render
+from django.contrib.auth import login
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views import View
+from apps.oauth.models import OAuthQQUser
+
+
+# 判断是否绑定
+def is_bind_openid(openid, request):
+    # 绑定过----首页
+    try:
+        qq_user = OAuthQQUser.objects.get(openid=openid)
+    except OAuthQQUser.DoesNotExist:
+        # 未绑定---绑定页面
+        return render(request, 'oauth_callback.html')
+    else:
+        user = qq_user.user
+        # 绑定---首页
+        # 保持登陆状态
+        login(request, user)
+
+        # 重定向首页
+        response = redirect(reverse("contents:index"))
+
+        # 设置cookie
+        response.set_cookie('username', user.username, max_ge=14*24*3600)
+
+        return response
 
 
 # 用户扫码登录的回调处理QQAuthUserView
@@ -21,13 +47,19 @@ class QQAuthCallBackView(View):
                         client_secret=settings.QQ_CLIENT_SECRET,
                         redirect_uri=settings.QQ_REDIRECT_URI,
                         state=next)
-        # code --- token
-        token = oauth.get_access_token(code)
+        try:
+            # code --- token
+            token = oauth.get_access_token(code)
 
-        # token --- openid
-        openid = oauth.get_open_id(token)
+            # token --- openid
+            openid = oauth.get_open_id(token)
+        except Exception as e:
+            return http.HttpResponseForbidden('认证失败')
 
-        return http.HttpResponse(openid)
+        # 是否绑定
+        response = is_bind_openid(openid, request)
+
+        return response
 
 
 # 返回qq登录地址
