@@ -92,7 +92,7 @@ var vm = new Vue({
                 this.error_password = false;
             } else {
                 this.error_password = true;
-                this.error_name_message = '请输入8-20密码';
+                this.error_password_message = '请输入8-20密码';
             }
         },
         // 确认密码

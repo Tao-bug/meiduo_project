@@ -8,12 +8,44 @@ from django.urls import reverse
 from django.views import View
 from pymysql import DatabaseError
 from apps.users.models import User
+from apps.users.utils import check_verify_email_token
 from meiduo_mall.settings.dev import logger
 from utils.response_code import RETCODE
 from django.contrib.auth import authenticate, login, logout
 
 
-# 新增邮箱
+# 8.激活邮箱
+class VerifyEmailView(LoginRequiredMixin, View):
+    """验证邮箱"""
+    def get(self, request):
+        """实现邮箱验证逻辑"""
+        # 接受token
+        token = request.GET.get('token')
+
+        # 2.解密 3. 取数据库对比
+        # 校验参数
+        # 判断token是否为空和过期，提取user
+        if not token:
+            return http.HttpResponseBadRequest('缺少token')
+
+        # 验证token并提取user
+        user = check_verify_email_token(token)
+        if not user:
+            return http.HttpResponseForbidden('无效的token')
+
+        # 4. 改email_active
+        try:
+            user.email_active = True
+            user.save()
+        except Exception as e:
+            logger.error(e)
+            return http.HttpResponseServerError('激活邮件失败')
+
+        # 5.重定向到 用户中心
+        return redirect(reverse('users:info'))
+
+
+# 7.新增邮箱
 class EmailView(LoginRequiredMixin, View):
     """添加邮箱"""
     def put(self, request):
@@ -46,7 +78,7 @@ class EmailView(LoginRequiredMixin, View):
         return http.JsonResponse({'code': RETCODE.OK, 'errmsg': '添加邮箱成功'})
 
 
-# 用户中心
+# 6.用户中心
 class UserInfoView(LoginRequiredMixin, View):
     def get(self, request):
         """提供个人信息界面"""
@@ -59,7 +91,7 @@ class UserInfoView(LoginRequiredMixin, View):
         return render(request, 'user_center_info.html', context=context)
 
 
-# 退出登陆
+# 5.退出登陆
 class LogoutView(View):
     """退出登录"""
 
@@ -75,7 +107,7 @@ class LogoutView(View):
         return response
 
 
-# 用户登陆面显示
+# 4.登录页
 class LoginView(View):
     # 登陆页面显示
     def get(self, request):
@@ -125,6 +157,7 @@ class LoginView(View):
         return response
 
 
+# 3.判断手机号 是否重复
 class MobileCountView(View):
     """判断手机号是否重复注册"""
 
@@ -138,6 +171,7 @@ class MobileCountView(View):
         return http.JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK', 'count': count})
 
 
+# 2.判断是否 重复  username
 class UsernameCountView(View):
     """判断用户名是否重复注册"""
 
@@ -151,6 +185,7 @@ class UsernameCountView(View):
         return http.JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK', 'count': count})
 
 
+# 1.注册功能
 class RegisterView(View):
 
     # 1、注册页面显示

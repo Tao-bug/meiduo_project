@@ -1,7 +1,32 @@
 from django.conf import settings
 from django.contrib.auth.backends import ModelBackend
 import re
+from itsdangerous import BadData
+from meiduo_mall.settings.dev import logger
+from utils.secret import SecretOauth
 from .models import User
+
+
+# 验证token并提取user
+def check_verify_email_token(token):
+    """
+    验证token并提取user
+    :param token: 用户信息签名后的结果
+    :return: user, None
+    """
+    try:
+        # 接受token
+        token_dict = SecretOauth().loads(token)
+    except BadData:
+        return None
+
+    try:
+        user = User.objects.get(id=token_dict['user_id'], email=token_dict['email'])
+    except Exception as e:
+        logger.error(e)
+        return None
+    else:
+        return user
 
 
 # 生成 激活 链接
@@ -17,6 +42,7 @@ def generate_verify_email_url(user):
     verify_url = settings.EMAIL_ACTIVE_URL + '?token=' + secret_data
 
     return verify_url
+
 
 # 封装函数
 def get_user_by_account(account):
