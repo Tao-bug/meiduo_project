@@ -20,21 +20,24 @@
 		<div class="header">
 			<div class="welcome fl">欢迎来到美多商城!</div>
 			<div class="fr">
-				<div class="login_info fl">
-					欢迎您：<em>张 山</em>
-				</div>
-				<div class="login_btn fl">
-					<a href="login.html">登录</a>
-					<span>|</span>
-					<a href="register.html">注册</a>
-				</div>
+				<div v-if="username" class="login_btn fl">
+                    欢迎您：<em style="color:red">[[ username ]]</em>
+                    <span>|</span>
+                    <a href="/logout/">退出</a>
+                </div>
+                <div v-else class="login_btn fl">
+                    <a href="{{ url('users:login') }}">登录</a>
+                    <span>|</span>
+                    <a href="register.html">注册</a>
+                </div>
+
 				<div class="user_link fl">
 					<span>|</span>
-					<a href="user_center_info.html">用户中心</a>
+					<a href="/info/">用户中心</a>
 					<span>|</span>
-					<a href="cart.html">我的购物车</a>
+					<a href="../static/cart.html">我的购物车</a>
 					<span>|</span>
-					<a href="user_center_order.html">我的订单</a>
+					<a href="../static/user_center_order.html">我的订单</a>
 				</div>
 			</div>
 		</div>		
@@ -62,7 +65,7 @@
 			<ul>
 				<li><a href="user_center_info.html" class="active">· 个人信息</a></li>
 				<li><a href="user_center_order.html">· 全部订单</a></li>
-				<li><a href="user_center_site.html">· 收货地址</a></li>
+				<li><a href="/address/">· 收货地址</a></li>
 				<li><a href="user_center_pass.html">· 修改密码</a></li>
 			</ul>
 		</div>
@@ -73,7 +76,7 @@
         <li><span>用户名：</span>[[ username ]]</li>
         <li><span>联系方式：</span>[[ mobile ]]</li>
         <li>
-            <span>Email：[[ email ]]</span>
+            <span>Email：</span>
             <div v-if="set_email">
                 <input v-model="email" @blur="check_email" type="email" name="email" class="email">
                 <input @click="save_email" type="button" name="" value="保 存">

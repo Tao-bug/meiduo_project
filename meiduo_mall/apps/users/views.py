@@ -14,6 +14,14 @@ from utils.response_code import RETCODE
 from django.contrib.auth import authenticate, login, logout
 
 
+# 9.收货地址页面
+class AddressView(LoginRequiredMixin, View):
+    """用户收货地址"""
+    def get(self, request):
+        """提供收货地址界面"""
+        return render(request, 'user_center_site.html')
+
+
 # 8.激活邮箱
 class VerifyEmailView(LoginRequiredMixin, View):
     """验证邮箱"""
