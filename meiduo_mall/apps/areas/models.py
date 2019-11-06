@@ -1,6 +1,6 @@
 from django.db import models
 
-# Create your models here.
+
 class Area(models.Model):
     """省市区"""
     name = models.CharField(max_length=20, verbose_name='名称')

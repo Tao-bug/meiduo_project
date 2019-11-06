@@ -18,10 +18,15 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    # 1.用户的 功能
     url(r'^', include('apps.users.urls', namespace='users')),
+    # 2.首页的功能
     url(r'^', include('apps.contents.urls', namespace='contents')),
+    # 3.图片验证码
     url(r'^', include('apps.verifications.urls')),
+    # 4.QQ登录
     url(r'^', include('apps.oauth.urls', namespace="qq")),
+    # 5.省市区
     url(r'^', include('apps.areas.urls')),
 
 
