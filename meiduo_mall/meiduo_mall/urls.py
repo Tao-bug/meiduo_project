@@ -28,6 +28,8 @@ urlpatterns = [
     url(r'^', include('apps.oauth.urls', namespace="qq")),
     # 5.省市区
     url(r'^', include('apps.areas.urls')),
+    # 6. 列表页
+    url(r'^',include('apps.goods.urls'))
 
 
 ]
