@@ -34,6 +34,9 @@ urlpatterns = [
     # 10. 新增 收货地址 addresses/create/
     url(r'^addresses/create/$', views.AddressCreateView.as_view()),
 
+    # 11. 修改密码 password/
+    url(r'^password/$', views.ChangePwdView.as_view(), name='password'),
+
 
 
 ]
