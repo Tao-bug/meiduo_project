@@ -2,8 +2,9 @@ from django import http
 from django.shortcuts import render
 from django.views import View
 from apps.contents.utils import get_categories
-from apps.goods import models
+from apps.goods.models import GoodsCategory
 from apps.goods.utils import get_breadcrumb
+
 
 # 商品列表页
 class ListView(View):
@@ -12,8 +13,8 @@ class ListView(View):
         """提供商品列表页"""
         # 判断category_id是否正确
         try:
-            category = models.GoodsCategory.objects.get(id=category_id)
-        except models.GoodsCategory.DoesNotExist:
+            category = GoodsCategory.objects.get(id=category_id)
+        except GoodsCategory.DoesNotExist:
             return http.HttpResponseNotFound('GoodsCategory does not exist')
 
         # 查询商品频道分类
