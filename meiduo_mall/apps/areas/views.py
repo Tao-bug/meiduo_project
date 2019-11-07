@@ -65,5 +65,5 @@ class AreasView(View):
                 # 储存市或区缓存数据
                 cache.set('sub_area_' + area_id, sub_data, 3600)
 
-                # 响应市或区数据
-                return JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK', 'sub_data': sub_data})
+            # 响应市或区数据
+            return JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK', 'sub_data': sub_data})
