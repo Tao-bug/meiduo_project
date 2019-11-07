@@ -22,6 +22,7 @@ class IndexView(View):
 
         # 渲染模板的上下文
         context = {
-            'categories': categories
+            'categories': categories,
+            'contents': contents
         }
         return render(request, 'index.html', context)
