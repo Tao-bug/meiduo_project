@@ -18,17 +18,19 @@ def get_categories():
             categories[group_id] = {'channels': [], 'sub_cats': []}
 
         cat1 = channel.category  # 当前频道的类别
-
+        cat1.url = channel.url
         # 追加当前频道
-        categories[group_id]['channels'].append({
-            'id': cat1.id,
-            'name': cat1.name,
-            'url': channel.url
-        })
+        categories[group_id]['channels'].append(cat1)
+        # categories[group_id]['channels'].append({
+        #     'id': cat1.id,
+        #     'name': cat1.name,
+        #     'url': channel.url
+        # })
         # 构建当前类别的子类别
         for cat2 in cat1.subs.all():
             cat2.sub_cats = []
             for cat3 in cat2.subs.all():
                 cat2.sub_cats.append(cat3)
             categories[group_id]['sub_cats'].append(cat2)
+
     return categories
