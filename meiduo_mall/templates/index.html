@@ -134,7 +134,7 @@
                 {% endfor %}
 
 			</ul>
-			<a href="#" class="advs"><img src="http://127.0.0.1:8888/{{ contents.index_ytgg[0].image }}"></a>
+			<a href="#" class="advs"><img src="http://172.16.211.129:8888/{{ contents.index_ytgg[0].image }}"></a>
 		</div>
 	</div>
 
@@ -149,182 +149,59 @@
 		</div>
 		<div class="goods_con clearfix">
 			<div class="goods_banner fl">
-				<img src="../static/images/banner01.jpg">
+				<img src="{{ contents.index_1f_logo[0].image }}">
 				<div class="channel">
-					<a href="#">手机</a>
-					<a href="#">配件</a>
-					<a href="#">充值</a>
-					<a href="#">优惠券</a>
+                    {% for pd in contents.index_1f_pd %}
+                    	<a href="#">{{ pd.title }}</a>
+                    {% endfor %}
+
 				</div>
 				<div class="key_words">
-					<a href="#">荣耀手机</a>
-					<a href="#">国美手机</a>
-					<a href="#">华为手机</a>
-					<a href="#">热销推荐</a>
-					<a href="#">以旧换新</a>
-					<a href="#">潮3C</a>
-					<a href="#">全面屏</a>
-					<a href="#">守护宝</a>
-					<a href="#">存储卡</a>
-					<a href="#">保护套</a>
+                    {% for bq in contents.index_1f_bq %}
+                        <a href="#">{{ bq.title }}</a>
+
+                    {% endfor %}
+
 				</div>
 			</div>
 			<div class="goods_list_con">
 				<ul class="goods_list fl" v-show="f1_tab===1">
-					<li>					
-						<a href="http://itcast.cn/" class="goods_pic"><img src="../static/images/goods/goods003.jpg"></a>
-						<h4><a href="#" title="360手机 N6 Pro 全网通 6GB+128GB 极夜黑">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 2699.00</div>
+                    {% for ssxp in contents.index_1f_ssxp %}
+                        <li>
+						<a href="http://itcast.cn/" class="goods_pic"><img src="{{ ssxp.image }}"></a>
+						<h4><a href="#" title="{{ ssxp.title }}">{{ ssxp.title }}</a></h4>
+						<div class="price">{{ ssxp.text }}</div>
 					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods002.jpg"></a>
-						<h4><a href="#">iphoneX N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 7788.00</div>
-					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods001.jpg"></a>
-						<h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 1988.00</div>
-					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods004.jpg"></a>
-						<h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 3688.00</div>
-					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods005.jpg"></a>
-						<h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 4288.80</div>
-					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods003.jpg"></a>
-						<h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 2699.00</div>
-					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods002.jpg"></a>
-						<h4><a href="#">iphoneX N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 7788.00</div>
-					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods001.jpg"></a>
-						<h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 1988.00</div>
-					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods004.jpg"></a>
-						<h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 3688.00</div>
-					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods005.jpg"></a>
-						<h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 4288.80</div>
-					</li>
+
+                    {% endfor %}
+
+
 				</ul>
-				<ul class="goods_list fl" v-show="f1_tab===2">
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods002.jpg"></a>
-						<h4><a href="#">iphoneX N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 7788.00</div>
+
+                <ul class="goods_list fl" v-show="f1_tab===2">
+                    {% for ssxp in contents.index_1f_cxdj %}
+                        <li>
+						<a href="http://itcast.cn/" class="goods_pic"><img src="{{ ssxp.image }}"></a>
+						<h4><a href="#" title="{{ ssxp.title }}">{{ ssxp.title }}</a></h4>
+						<div class="price">{{ ssxp.text }}</div>
 					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods001.jpg"></a>
-						<h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 1988.00</div>
-					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods004.jpg"></a>
-						<h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 3688.00</div>
-					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods005.jpg"></a>
-						<h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 4288.80</div>
-					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods003.jpg"></a>
-						<h4><a href="#" title="360手机 N6 Pro 全网通 6GB+128GB 极夜黑">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 2699.00</div>
-					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods002.jpg"></a>
-						<h4><a href="#">iphoneX N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 7788.00</div>
-					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods001.jpg"></a>
-						<h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 1988.00</div>
-					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods004.jpg"></a>
-						<h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 3688.00</div>
-					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods005.jpg"></a>
-						<h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 4288.80</div>
-					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods003.jpg"></a>
-						<h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 2699.00</div>
-					</li>
+
+                    {% endfor %}
+
+
 				</ul>
-				<ul class="goods_list fl" v-show="f1_tab===3">
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods002.jpg"></a>
-						<h4><a href="#">iphoneX N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 7788.00</div>
+
+                <ul class="goods_list fl" v-show="f1_tab===3">
+                    {% for ssxp in contents.index_1f_sjpj %}
+                        <li>
+						<a href="http://itcast.cn/" class="goods_pic"><img src="{{ ssxp.image }}"></a>
+						<h4><a href="#" title="{{ ssxp.title }}">{{ ssxp.title }}</a></h4>
+						<div class="price">{{ ssxp.text }}</div>
 					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods001.jpg"></a>
-						<h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 1988.00</div>
-					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods004.jpg"></a>
-						<h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 3688.00</div>
-					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods005.jpg"></a>
-						<h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 4288.80</div>
-					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods003.jpg"></a>
-						<h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 2699.00</div>
-					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods003.jpg"></a>
-						<h4><a href="#" title="360手机 N6 Pro 全网通 6GB+128GB 极夜黑">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 2699.00</div>
-					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods002.jpg"></a>
-						<h4><a href="#">iphoneX N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 7788.00</div>
-					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods001.jpg"></a>
-						<h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 1988.00</div>
-					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods004.jpg"></a>
-						<h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 3688.00</div>
-					</li>
-					<li>					
-						<a href="#" class="goods_pic"><img src="../static/images/goods/goods005.jpg"></a>
-						<h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-						<div class="price">¥ 4288.80</div>
-					</li>
+
+                    {% endfor %}
+
+
 				</ul>
 			</div>
 		</div>
