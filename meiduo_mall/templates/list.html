@@ -42,7 +42,7 @@
     </div>
 
     <div class="search_bar clearfix">
-        <a href="index.html" class="logo fl"><img src="{{ static('images/logo.png') }}"></a>
+        <a href="/" class="logo fl"><img src="{{ static('images/logo.png') }}"></a>
         <div class="search_wrap fl">
             <form method="get" action="/search/" class="search_con">
                 <input type="text" class="input_text fl" name="q" placeholder="搜索商品">
@@ -128,7 +128,7 @@
                 <ul>
 
                     <li v-for = "sku in hots">
-                        <a href="detail.html"><img v-bind:src="'http://image.meiduo.site:8888/' + sku.default_image_url"></a>
+                        <a href="detail.html"><img v-bind:src="sku.default_image_url"></a>
                         <h4><a href="#">[[ sku.name ]]</a></h4>
                         <div class="price">￥[[ sku.price ]]</div>
                     </li>
