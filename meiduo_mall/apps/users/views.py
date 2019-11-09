@@ -6,14 +6,47 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
+from django_redis import get_redis_connection
 from pymysql import DatabaseError, constants
 from apps.areas.models import Address
+from apps.goods.models import SKU
 from apps.users.models import User
 from apps.users.utils import check_verify_email_token
 from meiduo_mall.settings.dev import logger
 from utils.response_code import RETCODE
 from django.contrib.auth import authenticate, login, logout
 
+
+# 12.用户浏览记录
+class UserBrowseHistory(LoginRequiredMixin, View):
+    """用户浏览记录"""
+    def post(self, request):
+        # 接受参数
+        sku_id = json.loads(request.body.decode()).get('sku_id')
+
+        # 2.根据sku_id 查询sku
+        try:
+            sku = SKU.objects.get(id=sku_id)
+        except SKU.DoesNotExist:
+            return HttpResponseForbidden('商品不存在!')
+
+        # 3.如果有sku,保存到redis
+        history_redis_client = get_redis_connection('history')
+        history_key = 'history_%s' % request.user.id
+
+        # 管道
+        redis_pipeline = history_redis_client.pipeline()
+
+        # 3.1 去重
+        history_redis_client.lrem(history_key, 0, sku_id)
+        # 3.2 存储
+        history_redis_client.lpush(history_key, sku_id)
+        # 3.3 截取 5个
+        history_redis_client.ltrim(history_key, 0, 4)
+        redis_pipeline.execute()
+
+        # 响应结果
+        return JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK'})
 
 # 11. 修改密码
 class ChangePwdView(LoginRequiredMixin, View):

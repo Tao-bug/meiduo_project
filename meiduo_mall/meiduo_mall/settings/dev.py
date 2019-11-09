@@ -188,6 +188,14 @@ CACHES = {
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             }
         },
+    # 4
+    "history": {  # 用户浏览记录--4号库
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/4",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
 
 }
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
@@ -233,6 +241,7 @@ LOGGING = {
             'level': 'INFO',  # 日志器接收的最低日志级别
         },
     }
+
 }
 # 实例化日志对象
 # 单例的设计模式：在整个运行项目中，有且只有一个 内存空间
