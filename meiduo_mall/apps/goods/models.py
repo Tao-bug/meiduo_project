@@ -2,7 +2,6 @@ from django.db import models
 from utils.models import BaseModel
 
 
-
 class GoodsCategory(BaseModel):
     """商品类别"""
     name = models.CharField(max_length=10, verbose_name='名称')

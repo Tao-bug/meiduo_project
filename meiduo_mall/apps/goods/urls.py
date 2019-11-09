@@ -14,6 +14,6 @@ urlpatterns = [
     url(r'^detail/(?P<sku_id>\d+)/$', views.DetailView.as_view(), name='detail'),
 
     # 4.访问量detail/visit/(?P<category_id>\d+)/
-    url(r'^detail/visit/(?P<category_id>\d+)/$', views.HotView.as_view()),
+    url(r'^detail/visit/(?P<category_id>\d+)/$', views.DetailVisitView.as_view()),
 
 ]

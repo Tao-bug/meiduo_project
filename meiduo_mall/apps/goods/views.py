@@ -4,8 +4,43 @@ from django.shortcuts import render
 from django.views import View
 from apps.contents.utils import get_categories
 from apps.goods import models
+from apps.goods.models import GoodsCategory
 from apps.goods.utils import get_breadcrumb
 from utils.response_code import RETCODE
+
+
+# 统计分类商品访问量模型类
+class DetailVisitView(View):
+    def post(self, request, category_id):
+        try:
+            # 1.获取当前商品
+            category = GoodsCategory.objects.get(id=category_id)
+        except Exception as e:
+            return http.HttpResponseNotFound('缺少必传参数')
+
+        # 2.查询日期数据
+        from datetime import datetime
+        # 将日期按照格式转换成字符串
+        today_str = datetime.now().strftime('%Y-%m-%d')
+        # 将字符串再转换成日期格式
+        today_date = datetime.strptime(today_str, '%Y-%m-%d')
+
+        from apps.goods.models import GoodsVisitCount
+        try:
+            # 3.如果有当天商品分类的数据  就累加数量
+            count_data = category.goodsvisitcount_set.get(date=today_date)
+        except:
+            # 4. 没有, 就新建之后在增加
+            count_data = GoodsVisitCount()
+
+        try:
+            count_data.count += 1
+            count_data.category = category
+            count_data.save()
+        except Exception as e:
+            return http.HttpResponseServerError('新增失败')
+
+        return http.JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK'})
 
 
 # 商品详情页
