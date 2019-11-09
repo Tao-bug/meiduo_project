@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="75046370-b109-49fc-8a52-7bf24967fbb7" name="Default" comment="查询列表页分页和排序数据">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/static/404.html" afterPath="$PROJECT_DIR$/templates/404.html" />
+    <list default="true" id="75046370-b109-49fc-8a52-7bf24967fbb7" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/goods/models.py" afterPath="$PROJECT_DIR$/apps/goods/models.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/goods/urls.py" afterPath="$PROJECT_DIR$/apps/goods/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/goods/views.py" afterPath="$PROJECT_DIR$/apps/goods/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/yuntongxun/CCPRestSDK.py" afterPath="$PROJECT_DIR$/libs/yuntongxun/CCPRestSDK.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/yuntongxun/xmltojson.py" afterPath="$PROJECT_DIR$/libs/yuntongxun/xmltojson.py" />
     </list>
@@ -49,11 +48,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="urls.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/apps/goods/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="10" column="50" lean-forward="false" selection-start-line="10" selection-start-column="50" selection-end-line="10" selection-end-column="50" />
+            <state relative-caret-position="294">
+              <caret line="16" column="72" lean-forward="false" selection-start-line="16" selection-start-column="72" selection-end-line="16" selection-end-column="72" />
               <folding />
             </state>
           </provider>
@@ -68,6 +67,28 @@
                 <element signature="e#0#23#0" expanded="true" />
                 <element signature="e#2130#2700#0" expanded="false" />
                 <element signature="e#2734#4391#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/apps/goods/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="231">
+              <caret line="46" column="0" lean-forward="true" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+              <folding>
+                <element signature="e#103#482#0" expanded="false" />
+                <element signature="e#528#781#0" expanded="false" />
+                <element signature="e#819#1303#0" expanded="false" />
+                <element signature="e#1334#1695#0" expanded="false" />
+                <element signature="e#1724#2741#0" expanded="false" />
+                <element signature="e#2770#3885#0" expanded="false" />
+                <element signature="e#3919#4257#0" expanded="false" />
+                <element signature="e#4299#4691#0" expanded="false" />
+                <element signature="e#4736#5136#0" expanded="false" />
+                <element signature="e#5178#5718#0" expanded="false" />
+                <element signature="e#5759#6134#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -124,7 +145,6 @@
         <option value="$PROJECT_DIR$/templates/user_center_site.html" />
         <option value="$PROJECT_DIR$/apps/users/views.py" />
         <option value="$PROJECT_DIR$/apps/contents/models.py" />
-        <option value="$PROJECT_DIR$/apps/goods/models.py" />
         <option value="$PROJECT_DIR$/templates/user_center_info.html" />
         <option value="$PROJECT_DIR$/templates/user_center_pass.html" />
         <option value="$PROJECT_DIR$/apps/contents/views.py" />
@@ -138,6 +158,7 @@
         <option value="$PROJECT_DIR$/templates/index.html" />
         <option value="$PROJECT_DIR$/apps/goods/views.py" />
         <option value="$PROJECT_DIR$/apps/goods/urls.py" />
+        <option value="$PROJECT_DIR$/apps/goods/models.py" />
       </list>
     </option>
   </component>
@@ -841,7 +862,14 @@
       <option name="project" value="LOCAL" />
       <updated>1573272786485</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="商品详情页&#10;查询SKU规格信息">
+      <created>1573298704581</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1573298704581</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -914,7 +942,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="false" />
-    <MESSAGE value="创建了oauth子应用&#10;创建了模型基类---创建时间和更新时间&#10;创建了QQ 绑定openid的表 模型&#10;数据迁移" />
     <MESSAGE value="获取qq的登陆地址&#10;" />
     <MESSAGE value="code -- token -- openid" />
     <MESSAGE value="判断是否绑定openid&#10;未绑定---绑定页面" />
@@ -939,7 +966,8 @@
     <MESSAGE value="列表页面包屑导航" />
     <MESSAGE value="列表页----面包屑cat.parent.parent" />
     <MESSAGE value="查询列表页分页和排序数据" />
-    <option name="LAST_COMMIT_MESSAGE" value="查询列表页分页和排序数据" />
+    <MESSAGE value="商品详情页&#10;查询SKU规格信息" />
+    <option name="LAST_COMMIT_MESSAGE" value="商品详情页&#10;查询SKU规格信息" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1207,14 +1235,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/goods/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3192">
-          <caret line="156" column="15" lean-forward="false" selection-start-line="156" selection-start-column="15" selection-end-line="156" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/apps/contents/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="399">
@@ -1355,9 +1375,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/apps/goods/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="10" column="50" lean-forward="false" selection-start-line="10" selection-start-column="50" selection-end-line="10" selection-end-column="50" />
+        <state relative-caret-position="294">
+          <caret line="16" column="72" lean-forward="false" selection-start-line="16" selection-start-column="72" selection-end-line="16" selection-end-column="72" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/goods/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="46" column="0" lean-forward="true" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+          <folding>
+            <element signature="e#103#482#0" expanded="false" />
+            <element signature="e#528#781#0" expanded="false" />
+            <element signature="e#819#1303#0" expanded="false" />
+            <element signature="e#1334#1695#0" expanded="false" />
+            <element signature="e#1724#2741#0" expanded="false" />
+            <element signature="e#2770#3885#0" expanded="false" />
+            <element signature="e#3919#4257#0" expanded="false" />
+            <element signature="e#4299#4691#0" expanded="false" />
+            <element signature="e#4736#5136#0" expanded="false" />
+            <element signature="e#5178#5718#0" expanded="false" />
+            <element signature="e#5759#6134#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
