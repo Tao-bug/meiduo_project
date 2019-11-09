@@ -20,6 +20,27 @@ from django.contrib.auth import authenticate, login, logout
 # 12.用户浏览记录
 class UserBrowseHistory(LoginRequiredMixin, View):
     """用户浏览记录"""
+    def get(self, request):
+        """获取用户浏览记录"""
+        # 获取Redis存储的sku_id列表信息
+        redis_conn = get_redis_connection('history')
+        sku_ids = redis_conn.lrange('history_%s' % request.user.id, 0, -1)
+
+        # 根据sku_ids列表数据，查询出商品sku信息
+        # skus = SKU.objects.filter(id__in=sku_ids)
+        skus = []
+        for sku_id in sku_ids:
+            sku = SKU.objects.get(id=sku_id)
+            skus.append({
+                'id': sku.id,
+                'name': sku.name,
+                'default_image_url': sku.default_image.url,
+                'price': sku.price
+            })
+
+        return http.JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK', 'skus': skus})
+
+    """用户浏览记录"""
     def post(self, request):
         # 接受参数
         sku_id = json.loads(request.body.decode()).get('sku_id')
@@ -47,6 +68,7 @@ class UserBrowseHistory(LoginRequiredMixin, View):
 
         # 响应结果
         return JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK'})
+
 
 # 11. 修改密码
 class ChangePwdView(LoginRequiredMixin, View):
