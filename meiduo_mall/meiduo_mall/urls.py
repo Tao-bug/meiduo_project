@@ -29,7 +29,9 @@ urlpatterns = [
     # 5.省市区
     url(r'^', include('apps.areas.urls')),
     # 6. 列表页
-    url(r'^', include('apps.goods.urls', namespace='goods'))
+    url(r'^', include('apps.goods.urls', namespace='goods')),
+    # 7.购物车
+    url(r'^', include('apps.carts.urls')),
 
 
 ]
