@@ -1,9 +1,10 @@
-from apps.goods import models
-
+from django_redis import get_redis_connection
 import json
 from django import http
-from django.shortcuts import render
 from django.views import View
+
+from apps.goods import models
+from utils.cookiesecret import CookieSecret
 
 
 # 购物车管理
@@ -39,8 +40,50 @@ class CartsView(View):
         user = request.user
         if user.is_authenticated:
             # 用户已登录，操作redis购物车
-            pass
+            # 3.1 登录 使用redis存储
+            carts_redis_client = get_redis_connection('carts')
+
+            # 3.2 获取以前数据库的数据
+            client_data = carts_redis_client.hgetall(user.id)
+
+            # 如果商品已经存在就更新数据
+            if str(sku_id).encode() in client_data:
+                # 根据sku_id 取出商品
+                child_dict = json.loads(client_data[str(sku_id).encode()].decode())
+                #  个数累加
+                child_dict['count'] += count
+                # 更新数据
+                carts_redis_client.hset(user.id, sku_id, json.dumps(child_dict))
+
+            else:
+                # 如果商品已经不存在--直接增加商品数据
+                carts_redis_client.hset(user.id, sku_id, json.dumps({'count': count, 'selected': selected}))
+                return http.JsonResponse({'code': 0, 'errmsg': '添加购物车成功'})
         else:
             # 用户未登录，操作cookie购物车
-            pass
-        return http.JsonResponse({'code': 0, 'errmsg': '添加购物车成功'})
+            # 用户未登录，操作cookie购物车
+            cart_str = request.COOKIES.get('carts')
+            # 如果用户操作过cookie购物车
+            if cart_str:
+                # 解密出明文
+                cart_dict = CookieSecret.loads(cart_str)
+            else:  # 用户从没有操作过cookie购物车
+                cart_dict = {}
+
+            # 判断要加入购物车的商品是否已经在购物车中,如有相同商品，累加求和，反之，直接赋值
+            if sku_id in cart_dict:
+                # 累加求和
+                origin_count = cart_dict[sku_id]['count']
+                count += origin_count
+            cart_dict[sku_id] = {
+                'count': count,
+                'selected': selected
+            }
+            # 转成密文
+            cookie_cart_str = CookieSecret.dumps(cart_dict)
+
+            # 创建响应对象
+            response = http.JsonResponse({'code': 0, 'errmsg': '添加购物车成功'})
+            # 响应结果并将购物车数据写入到cookie
+            response.set_cookie('carts', cookie_cart_str, max_age=24 * 30 * 3600)
+            return response
