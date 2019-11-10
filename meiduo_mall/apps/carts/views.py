@@ -9,6 +9,40 @@ from apps.goods.models import SKU
 from utils.cookiesecret import CookieSecret
 
 
+# 商品页面右上角购物车
+class CartsSimpleView(View):
+    def get(self, request):
+        """商品页面右上角购物车"""
+        # 判断用户是否登陆
+        user = request.user
+        if user.is_authenticated:
+            # 用户已登录，查询Redis购物车
+            client = get_redis_connection('carts')
+            carts_data = client.hgetall(user.id)
+            # 转换格式
+            carts_dict = {int(k.decode()): json.loads(v.decode()) for k, v in carts_data.items()}
+        else:
+            # 用户未登录，查询cookie购物车
+            carts_str = request.COOKIES.get('carts')
+            if carts_str:
+                carts_dict = CookieSecret.loads(carts_str)
+            else:
+                carts_dict = {}
+
+        # 构造简单购物车JSON数据
+        cart_skus = []
+        sku_ids = carts_dict.keys()
+        skus = SKU.objects.filter(id__in=sku_ids)
+        for sku in skus:
+            cart_skus.append({
+                'id': sku.id,
+                'name': sku.name,
+                'count': carts_dict.get(sku.id).get('count'),
+                'default_image_url': sku.default_image.url
+            })
+        return http.JsonResponse({'code': 0, 'errmsg': 'OK', 'cart_skus': cart_skus})
+
+
 # 全选购物车
 class CartsSelectAllView(View):
     """全选购物车"""
