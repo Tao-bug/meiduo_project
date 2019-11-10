@@ -9,6 +9,48 @@ from apps.goods.models import SKU
 from utils.cookiesecret import CookieSecret
 
 
+# 全选购物车
+class CartsSelectAllView(View):
+    """全选购物车"""
+    def put(self, request):
+        # 接收参数
+        json_dict = json.loads(request.body.decode())
+        selected = json_dict.get('selected', True)
+
+        # 校验参数
+        if selected:
+            if not isinstance(selected, bool):
+                return http.HttpResponseForbidden('参数selected有误')
+
+        # 判断用户是否登录
+        user = request.user
+        if user.is_authenticated:
+            # 用户已登录，操作redis购物车
+            client = get_redis_connection('carts')
+            carts_data = client.hgetall(user.id)
+
+            # 将所有商品的 选中状态修改
+            for key, value in carts_data.items():
+                sku_id = int(key.decode())
+                carts_dict = json.loads(value.decode())
+
+                # 修改所有商品的 选中状态
+                carts_dict['selected'] = selected
+                client.hset(user.id, sku_id, json.dumps(carts_dict))
+            return http.JsonResponse({'code': 0, 'errmsg': '全选购物车成功'})
+        else:
+            # 用户未登录，操作cookie购物车
+            carts_str = request.COOKIES.get('carts')
+            response = http.JsonResponse({'code': 0, 'errmsg': '全选购物车成功'})
+            if carts_str is not None:
+                carts_dict = CookieSecret.loads(carts_str)
+                for sku_id in carts_dict:
+                    carts_dict[sku_id]['selected'] = selected
+                cookie_cart = CookieSecret.dumps(carts_dict)
+                response.set_cookie('carts', cookie_cart, max_age=14*24*3600)
+            return response
+
+
 # 购物车管理
 class CartsView(View):
     """购物车管理"""

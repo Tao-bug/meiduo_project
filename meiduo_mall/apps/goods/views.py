@@ -95,9 +95,9 @@ class DetailView(View):
 
         # 渲染页面
         context = {
-            'categories':categories,
-            'breadcrumb':breadcrumb,
-            'sku':sku,
+            'categories': categories,
+            'breadcrumb': breadcrumb,
+            'sku': sku,
             'specs': goods_specs,
         }
         return render(request, 'detail.html', context)
