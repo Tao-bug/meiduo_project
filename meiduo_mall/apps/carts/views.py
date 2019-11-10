@@ -1,15 +1,66 @@
+from django.shortcuts import render
 from django_redis import get_redis_connection
 import json
 from django import http
 from django.views import View
 
 from apps.goods import models
+from apps.goods.models import SKU
 from utils.cookiesecret import CookieSecret
 
 
 # 购物车管理
 class CartsView(View):
     """购物车管理"""
+
+    # 展示购物车
+    def get(self, request):
+        user = request.user
+        if user.is_authenticated:
+            # 连接redis
+            client = get_redis_connection('carts')
+            # redis取
+            carts_data = client.hgetall(request.user.id)
+            # 转换格式-->和cookie一样的字典 方便后面构建数据
+            # cart_dict = {}
+            # for key, value in carts_data.items():
+            #     sku_id = int(key.decode())
+            #     sku_dict = json.loads(value.decode())
+            #     cart_dict[sku_id] = sku_dict
+
+            carts_dict = {
+                int(k.decode()): json.loads(v.decode()) for k, v in carts_data.items()
+            }
+
+        else:
+            # 从cookie取
+            cookie_str = request.COOKIES.get('carts')
+            # 判断有无---有---解密
+            if cookie_str:
+                carts_dict = CookieSecret.loads(cookie_str)
+            else:
+                carts_dict = {}
+
+        sku_ids = carts_dict.keys()
+        skus = SKU.objects.filter(id__in=sku_ids)
+        cart_skus = []
+        for sku in skus:
+            cart_skus.append({
+                'id': sku.id,
+                'name': sku.name,
+                'count': carts_dict.get(sku.id).get('count'),
+                'selected': str(carts_dict.get(sku.id).get('selected')),  # 将True，转'True'，方便json解析
+                'default_image_url': sku.default_image.url,
+                'price': str(sku.price),  # 从Decimal('10.2')中取出'10.2'，方便json解析
+                'amount': str(sku.price * carts_dict.get(sku.id).get('count')),
+            })
+        context = {
+            'cart_skus': cart_skus,
+        }
+
+        return render(request, 'cart.html', context)
+
+    # 增加
     def post(self, request):
         """添加购物车"""
         # 接收参数
@@ -87,3 +138,6 @@ class CartsView(View):
             # 响应结果并将购物车数据写入到cookie
             response.set_cookie('carts', cookie_cart_str, max_age=24 * 30 * 3600)
             return response
+
+
+
