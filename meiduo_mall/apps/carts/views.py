@@ -12,6 +12,78 @@ from utils.cookiesecret import CookieSecret
 # 购物车管理
 class CartsView(View):
     """购物车管理"""
+    # 修改购物车
+    def put(self, request):
+
+        # 接受参数
+        json_dict = json.loads(request.body.decode())
+        sku_id = json_dict.get('sku_id')
+        count = json_dict.get('count')
+        selected = json_dict.get('selected', True)
+
+        # 校验参数
+        if not all([sku_id, count]):
+            return http.HttpResponseForbidden('缺少必传参数')
+        # 判断sku_id是否存在
+        try:
+            sku = models.SKU.objects.get(id=sku_id)
+        except models.SKU.DoesNotExist:
+            return http.HttpResponseForbidden('商品不存在')
+        # 判断count是否为数字
+        try:
+            count = int(count)
+        except Exception:
+            return http.HttpResponseForbidden('参数count有误')
+        # 判断selected是否为bool值
+        if selected:
+            if not isinstance(selected, bool):
+                return http.HttpResponseForbidden('参数selected有误')
+
+        # 判断是否登陆
+        user = request.user
+        # 接收cookie最后的数据
+        cart_str = ""
+        if user.is_authenticated:
+            # 登陆 -- redis
+            client = get_redis_connection('carts')
+            # 覆盖redis以前的数据
+            new_cart_dict = {'count': count, 'selected': selected}
+            client.hset(user.id, sku_id, json.dumps(new_cart_dict))
+
+        # 未登录 -- cookie
+        else:
+            # 用户未登录，删除cookie购物车
+            cart_str = request.COOKIES.get('carts')
+            if cart_str:
+                # 解密
+                cart_dict = CookieSecret.loads(cart_str)
+            else:
+                cart_dict = {}
+
+            # 覆盖以前的数据
+            cart_dict[sku_id] = {
+                'count': count,
+                'selected': selected
+            }
+            # 转换成 密文数据
+            cart_str = CookieSecret.dumps(cart_dict)
+
+        # 构建前端的数据
+        cart_sku = {
+            'id': sku_id,
+            'count': count,
+            'selected': selected,
+            'name': sku.name,
+            'default_image_url': sku.default_image.url,
+            'price': sku.price,
+            'amount': sku.price * count,
+        }
+        response = http.JsonResponse({'code': 0, 'errmsg': '修改购物车成功', 'cart_sku': cart_sku})
+        if not user.is_authenticated:
+            # 响应结果并将购物车数据写入到cookie
+            response.set_cookie('carts', cart_str, max_age=24 * 30 * 3600)
+        # 局部刷新--返回改完数据  字典
+        return response
 
     # 展示购物车
     def get(self, request):
