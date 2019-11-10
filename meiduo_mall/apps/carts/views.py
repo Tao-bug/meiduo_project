@@ -12,6 +12,47 @@ from utils.cookiesecret import CookieSecret
 # 购物车管理
 class CartsView(View):
     """购物车管理"""
+    # 删除购物车
+    def delete(self, request):
+        """删除购物车"""
+        # 接受参数
+        json_dict = json.loads(request.body.decode())
+        sku_id = json_dict.get('sku_id')
+
+        # 判断 sku_id 是否存在
+        try:
+            models.SKU.objects.get(id=sku_id)
+        except models.SKU.DoesNotExist:
+            return http.HttpResponseForbidden('商品不存在')
+
+        # 判断用户是否登陆
+        user = request.user
+        if user is not None and user.is_authenticated:
+            # 用户登录，删除redis购物车
+            client = get_redis_connection('carts')
+            # 根据用户id 删除商品sku
+            client.hdel(user.id, sku_id)
+            # 删除结束后，没有响应的数据，只需要响应状态码即可
+            return http.JsonResponse({'code': 0, 'errmsg': '删除购物车成功'})
+        else:
+            # 用户未登录，删除cookie购物车
+            cart_str = request.COOKIES.get('carts')
+            if cart_str:
+                # 解密
+                cart_dict = CookieSecret.loads(cart_str)
+            else:
+                cart_dict = {}
+        # 创建响应对象
+        response = http.JsonResponse({'code': 0, 'errmsg': '删除购物车成功'})
+        if sku_id in cart_dict:
+            # 删除数据
+            del cart_dict[sku_id]
+            # 加密
+            cart_str = CookieSecret.dumps(cart_dict)
+            # 响应结果并将购物车数据写入到cookie
+            response.set_cookie('carts', cart_str, max_age=24 * 30 * 3600)
+        return response
+
     # 修改购物车
     def put(self, request):
 

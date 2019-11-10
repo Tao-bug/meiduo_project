@@ -50,12 +50,14 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/apps/carts/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="227">
-              <caret line="79" column="0" lean-forward="false" selection-start-line="79" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
+            <state relative-caret-position="190">
+              <caret line="126" column="23" lean-forward="true" selection-start-line="126" selection-start-column="23" selection-end-line="126" selection-end-column="23" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
-                <element signature="e#2648#4255#0" expanded="false" />
-                <element signature="e#4303#7015#0" expanded="false" />
+                <element signature="e#357#1649#0" expanded="false" />
+                <element signature="e#1700#3943#0" expanded="false" />
+                <element signature="e#3993#5600#0" expanded="false" />
+                <element signature="e#5648#8360#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -919,7 +921,14 @@
       <option name="project" value="LOCAL" />
       <updated>1573350564373</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="在购物车页面修改购物车使用局部刷新的效果。">
+      <created>1573353805242</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1573353805242</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -992,7 +1001,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="false" />
-    <MESSAGE value="新增邮箱 --PUT&#10;" />
     <MESSAGE value="邮箱激活&#10;" />
     <MESSAGE value="验证邮箱" />
     <MESSAGE value="创建areas自应用&#10;模型类 数据迁移&#10;areas.sql导入" />
@@ -1017,7 +1025,8 @@
     <MESSAGE value="添加购物车后端逻辑实现" />
     <MESSAGE value="添加购物车到Redis&#10;&#10;添加购物车到cookie" />
     <MESSAGE value="展示购物车后端逻辑实现&#10;查询Redis购物车&#10;查询Redis购物车&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="展示购物车后端逻辑实现&#10;查询Redis购物车&#10;查询Redis购物车&#10;" />
+    <MESSAGE value="在购物车页面修改购物车使用局部刷新的效果。" />
+    <option name="LAST_COMMIT_MESSAGE" value="在购物车页面修改购物车使用局部刷新的效果。" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1447,12 +1456,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/apps/carts/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="79" column="0" lean-forward="false" selection-start-line="79" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
+        <state relative-caret-position="190">
+          <caret line="126" column="23" lean-forward="true" selection-start-line="126" selection-start-column="23" selection-end-line="126" selection-end-column="23" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
-            <element signature="e#2648#4255#0" expanded="false" />
-            <element signature="e#4303#7015#0" expanded="false" />
+            <element signature="e#357#1649#0" expanded="false" />
+            <element signature="e#1700#3943#0" expanded="false" />
+            <element signature="e#3993#5600#0" expanded="false" />
+            <element signature="e#5648#8360#0" expanded="false" />
           </folding>
         </state>
       </provider>
