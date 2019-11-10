@@ -9,6 +9,7 @@ from django.views import View
 from django_redis import get_redis_connection
 from pymysql import DatabaseError, constants
 from apps.areas.models import Address
+from apps.carts.utils import merge_cart_cookie_to_redis
 from apps.goods.models import SKU
 from apps.users.models import User
 from apps.users.utils import check_verify_email_token
@@ -27,7 +28,7 @@ class UserBrowseHistory(LoginRequiredMixin, View):
         sku_ids = redis_conn.lrange('history_%s' % request.user.id, 0, -1)
 
         # 根据sku_ids列表数据，查询出商品sku信息
-        # skus = SKU.objects.filter(id__in=sku_ids)
+        # skus = SKU.objects.filter(id__in=sku_ids)  # 自动升序，不符合顺序
         skus = []
         for sku_id in sku_ids:
             sku = SKU.objects.get(id=sku_id)
@@ -364,6 +365,8 @@ class LoginView(View):
             response = redirect(reverse('contents:index'))
         response.set_cookie("username", user.username, max_age=14 * 3600 * 24)
 
+        # 调用合并购物车
+        merge_cart_cookie_to_redis(request=request, response=response)
         # 6.返回响应结果 跳转首页
         return response
 

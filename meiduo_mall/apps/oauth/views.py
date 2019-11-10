@@ -6,6 +6,8 @@ from django.contrib.auth import login
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
+
+from apps.carts.utils import merge_cart_cookie_to_redis
 from apps.oauth.models import OAuthQQUser
 from apps.users.models import User
 from utils.secret import SecretOauth
@@ -63,6 +65,9 @@ class QQAuthCallBackView(View):
 
         # 是否绑定
         response = is_bind_openid(openid, request)
+
+        # 调用合并购物车
+        merge_cart_cookie_to_redis(request=request, response=response)
 
         return response
 

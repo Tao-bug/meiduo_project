@@ -61,7 +61,7 @@ var vm = new Vue({
                             // 删除评价后的商品
                             this.skus.splice(index, 1);
                         } else if (response.data.code == '4101') {
-                            location.href = '/login/?next=/orders/comment/';
+                            location.href = '/apps/orders/comment/';
                         } else {
                             alert(response.data.errmsg);
                         }
