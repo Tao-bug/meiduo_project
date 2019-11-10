@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="75046370-b109-49fc-8a52-7bf24967fbb7" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/carts/utils.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/carts/urls.py" afterPath="$PROJECT_DIR$/apps/carts/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/carts/views.py" afterPath="$PROJECT_DIR$/apps/carts/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/goods/views.py" afterPath="$PROJECT_DIR$/apps/goods/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/yuntongxun/CCPRestSDK.py" afterPath="$PROJECT_DIR$/libs/yuntongxun/CCPRestSDK.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/yuntongxun/xmltojson.py" afterPath="$PROJECT_DIR$/libs/yuntongxun/xmltojson.py" />
     </list>
@@ -49,10 +47,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/apps/carts/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="84">
+            <state relative-caret-position="147">
               <caret line="28" column="39" lean-forward="true" selection-start-line="28" selection-start-column="39" selection-end-line="28" selection-end-column="39" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
@@ -61,6 +59,28 @@
                 <element signature="e#3211#5454#0" expanded="false" />
                 <element signature="e#5504#7111#0" expanded="false" />
                 <element signature="e#7159#9871#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="utils.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/apps/goods/utils.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="294">
+              <caret line="14" column="51" lean-forward="false" selection-start-line="14" selection-start-column="51" selection-end-line="14" selection-end-column="51" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="utils.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/apps/carts/utils.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="101">
+              <caret line="9" column="26" lean-forward="false" selection-start-line="9" selection-start-column="26" selection-end-line="9" selection-end-column="26" />
+              <folding>
+                <element signature="e#0#11#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -165,6 +185,7 @@
         <option value="$PROJECT_DIR$/apps/carts/urls.py" />
         <option value="$PROJECT_DIR$/apps/goods/views.py" />
         <option value="$PROJECT_DIR$/apps/carts/views.py" />
+        <option value="$PROJECT_DIR$/apps/carts/utils.py" />
       </list>
     </option>
   </component>
@@ -244,7 +265,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="goods" />
+              <option name="myItemId" value="carts" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -588,13 +609,6 @@
       <option name="presentableId" value="Default" />
       <updated>1572486619833</updated>
     </task>
-    <task id="LOCAL-00002" summary="实现用户注册并转到首页">
-      <created>1572611880818</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1572611880818</updated>
-    </task>
     <task id="LOCAL-00003" summary="用户注册业务实现&#10;手机号重复注册&#10;图形验证码&#10;短信验证码">
       <created>1572713930975</created>
       <option name="number" value="00003" />
@@ -931,14 +945,21 @@
       <option name="project" value="LOCAL" />
       <updated>1573357666598</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="在购物车页面修改购物车使用局部刷新的效果。&#10;全选购物车">
+      <created>1573360924918</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1573360924918</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="47" y="24" width="1393" height="815" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17468542" sideWeight="0.49019608" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17468542" sideWeight="0.49019608" order="2" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32916668" sideWeight="0.50407106" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23019986" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1004,7 +1025,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="false" />
-    <MESSAGE value="验证邮箱" />
     <MESSAGE value="创建areas自应用&#10;模型类 数据迁移&#10;areas.sql导入" />
     <MESSAGE value="获取地区数据----前段需要的格式转换" />
     <MESSAGE value="关联查询&#10;" />
@@ -1029,7 +1049,8 @@
     <MESSAGE value="展示购物车后端逻辑实现&#10;查询Redis购物车&#10;查询Redis购物车&#10;" />
     <MESSAGE value="在购物车页面修改购物车使用局部刷新的效果。" />
     <MESSAGE value="在购物车页面 删除 购物车使用局部刷新的效果。" />
-    <option name="LAST_COMMIT_MESSAGE" value="在购物车页面 删除 购物车使用局部刷新的效果。" />
+    <MESSAGE value="在购物车页面修改购物车使用局部刷新的效果。&#10;全选购物车" />
+    <option name="LAST_COMMIT_MESSAGE" value="在购物车页面修改购物车使用局部刷新的效果。&#10;全选购物车" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1038,13 +1059,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/static/js/login.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/js/order_success.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-441">
@@ -1228,13 +1242,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/goods/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="14" column="51" lean-forward="false" selection-start-line="14" selection-start-column="51" selection-end-line="14" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/apps/contents/utils.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="395">
@@ -1352,16 +1359,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utils/cookiesecret.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/meiduo_mall/settings/dev.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="163">
@@ -1460,7 +1457,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/apps/carts/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
+        <state relative-caret-position="147">
           <caret line="28" column="39" lean-forward="true" selection-start-line="28" selection-start-column="39" selection-end-line="28" selection-end-column="39" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
@@ -1469,6 +1466,32 @@
             <element signature="e#3211#5454#0" expanded="false" />
             <element signature="e#5504#7111#0" expanded="false" />
             <element signature="e#7159#9871#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/goods/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="14" column="51" lean-forward="false" selection-start-line="14" selection-start-column="51" selection-end-line="14" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/cookiesecret.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="483">
+          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/carts/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="101">
+          <caret line="9" column="26" lean-forward="false" selection-start-line="9" selection-start-column="26" selection-end-line="9" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
