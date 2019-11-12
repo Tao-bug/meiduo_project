@@ -68,7 +68,7 @@ class UserBrowseHistory(LoginRequiredMixin, View):
         redis_pipeline.execute()
 
         # 响应结果
-        return JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK'})
+        return http.JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK'})
 
 
 # 11. 修改密码
