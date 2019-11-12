@@ -116,9 +116,9 @@ class OrderCommitView(LoginRequiredMixin, View):
                         # time.sleep(10)
 
                         # sku减少库存, 增加销量
-                        sku.stock -= cart_count
-                        sku.sales += cart_count
-                        sku.save()
+                        # sku.stock -= cart_count
+                        # sku.sales += cart_count
+                        # sku.save()
 
                         # 使用乐观锁 更新库存量
                         new_stock = origin_stock - cart_count
