@@ -8,14 +8,12 @@ def get_breadcrumb(cat3):
     cat2 = cat3.parent
     # 3.根据二级获取一级
     cat1 = cat2.parent
-    # 4. 拼接前端需要的数据
-    breadcrumb = {
+    return {
         'cat1': {
             # 根据一级分类关联频道获取频道的url
             "url": cat1.goodschannel_set.all()[0].url,
-            'name': cat1.name
+            'name': cat1.name,
         },
         "cat2": cat2,
         "cat3": cat3,
     }
-    return breadcrumb

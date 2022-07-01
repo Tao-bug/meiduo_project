@@ -34,4 +34,4 @@ class Content(BaseModel):
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        return self.category.name + ': ' + self.title
+        return f'{self.category.name}: {self.title}'

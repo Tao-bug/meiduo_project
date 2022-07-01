@@ -85,9 +85,10 @@ class REST:
         signature = self.AccountSid + self.AccountToken + self.Batch
         sig = md5(signature.encode()).hexdigest().upper()
         # 拼接URL
-        url = "https://" + self.ServerIP + ":" + self.ServerPort + "/" + self.SoftVersion + "/Accounts/" + self.AccountSid + "/SubAccounts?sig=" + sig
+        url = f"https://{self.ServerIP}:{self.ServerPort}/{self.SoftVersion}/Accounts/{self.AccountSid}/SubAccounts?sig={sig}"
+
         # 生成auth
-        src = self.AccountSid + ":" + self.Batch
+        src = f"{self.AccountSid}:{self.Batch}"
         auth = base64.encodebytes(src.encode()).decode().strip()
         req = urllib2.Request(url)
         self.setHttpHeader(req)
@@ -135,9 +136,10 @@ class REST:
         signature = self.AccountSid + self.AccountToken + self.Batch
         sig = md5(signature.encode()).hexdigest().upper()
         # 拼接URL
-        url = "https://" + self.ServerIP + ":" + self.ServerPort + "/" + self.SoftVersion + "/Accounts/" + self.AccountSid + "/GetSubAccounts?sig=" + sig
+        url = f"https://{self.ServerIP}:{self.ServerPort}/{self.SoftVersion}/Accounts/{self.AccountSid}/GetSubAccounts?sig={sig}"
+
         # 生成auth
-        src = self.AccountSid + ":" + self.Batch
+        src = f"{self.AccountSid}:{self.Batch}"
         # auth = base64.encodestring(src).strip()
         auth = base64.encodebytes(src.encode()).decode().strip()
         req = urllib2.Request(url)
@@ -186,9 +188,10 @@ class REST:
         signature = self.AccountSid + self.AccountToken + self.Batch
         sig = md5(signature.encode()).hexdigest().upper()
         # 拼接URL
-        url = "https://" + self.ServerIP + ":" + self.ServerPort + "/" + self.SoftVersion + "/Accounts/" + self.AccountSid + "/QuerySubAccountByName?sig=" + sig
+        url = f"https://{self.ServerIP}:{self.ServerPort}/{self.SoftVersion}/Accounts/{self.AccountSid}/QuerySubAccountByName?sig={sig}"
+
         # 生成auth
-        src = self.AccountSid + ":" + self.Batch
+        src = f"{self.AccountSid}:{self.Batch}"
         # auth = base64.encodestring(src).strip()
         auth = base64.encodebytes(src.encode()).decode().strip()
         req = urllib2.Request(url)
@@ -238,19 +241,17 @@ class REST:
         signature = self.AccountSid + self.AccountToken + self.Batch
         sig = md5(signature.encode()).hexdigest().upper()
         # 拼接URL
-        url = "https://" + self.ServerIP + ":" + self.ServerPort + "/" + self.SoftVersion + "/Accounts/" + self.AccountSid + "/SMS/TemplateSMS?sig=" + sig
+        url = f"https://{self.ServerIP}:{self.ServerPort}/{self.SoftVersion}/Accounts/{self.AccountSid}/SMS/TemplateSMS?sig={sig}"
+
         # 生成auth
-        src = self.AccountSid + ":" + self.Batch
+        src = f"{self.AccountSid}:{self.Batch}"
         # auth = base64.encodestring(src).strip()
         auth = base64.encodebytes(src.encode()).decode().strip()
         req = urllib2.Request(url)
         self.setHttpHeader(req)
         req.add_header("Authorization", auth)
         # 创建包体
-        b = ''
-        for a in datas:
-            b += '<data>%s</data>' % (a)
-
+        b = ''.join(f'<data>{a}</data>' for a in datas)
         body = '<?xml version="1.0" encoding="utf-8"?><SubAccount><datas>' + b + '</datas><to>%s</to><templateId>%s</templateId><appId>%s</appId>\
             </SubAccount>\
             ' % (to, tempId, self.AppId)
@@ -307,9 +308,10 @@ class REST:
         signature = self.AccountSid + self.AccountToken + self.Batch
         sig = md5(signature.encode()).hexdigest().upper()
         # 拼接URL
-        url = "https://" + self.ServerIP + ":" + self.ServerPort + "/" + self.SoftVersion + "/Accounts/" + self.AccountSid + "/Calls/LandingCalls?sig=" + sig
+        url = f"https://{self.ServerIP}:{self.ServerPort}/{self.SoftVersion}/Accounts/{self.AccountSid}/Calls/LandingCalls?sig={sig}"
+
         # 生成auth
-        src = self.AccountSid + ":" + self.Batch
+        src = f"{self.AccountSid}:{self.Batch}"
         # auth = base64.encodestring(src).strip()
         auth = base64.encodebytes(src.encode()).decode().strip()
         req = urllib2.Request(url)
@@ -368,9 +370,10 @@ class REST:
         signature = self.AccountSid + self.AccountToken + self.Batch
         sig = md5(signature.encode()).hexdigest().upper()
         # 拼接URL
-        url = "https://" + self.ServerIP + ":" + self.ServerPort + "/" + self.SoftVersion + "/Accounts/" + self.AccountSid + "/Calls/VoiceVerify?sig=" + sig
+        url = f"https://{self.ServerIP}:{self.ServerPort}/{self.SoftVersion}/Accounts/{self.AccountSid}/Calls/VoiceVerify?sig={sig}"
+
         # 生成auth
-        src = self.AccountSid + ":" + self.Batch
+        src = f"{self.AccountSid}:{self.Batch}"
         # auth = base64.encodestring(src).strip()
         auth = base64.encodebytes(src.encode()).decode().strip()
         req = urllib2.Request(url)
@@ -423,9 +426,10 @@ class REST:
         signature = self.AccountSid + self.AccountToken + self.Batch;
         sig = md5(signature.encode()).hexdigest().upper()
         # 拼接URL
-        url = "https://" + self.ServerIP + ":" + self.ServerPort + "/" + self.SoftVersion + "/Accounts/" + self.AccountSid + "/ivr/dial?sig=" + sig
+        url = f"https://{self.ServerIP}:{self.ServerPort}/{self.SoftVersion}/Accounts/{self.AccountSid}/ivr/dial?sig={sig}"
+
         # 生成auth
-        src = self.AccountSid + ":" + self.Batch
+        src = f"{self.AccountSid}:{self.Batch}"
         auth = base64.encodebytes(src.encode()).decode().strip()
         req = urllib2.Request(url)
         req.add_header("Accept", "application/xml")
@@ -467,9 +471,10 @@ class REST:
         signature = self.AccountSid + self.AccountToken + self.Batch
         sig = md5(signature.encode()).hexdigest().upper()
         # 拼接URL
-        url = "https://" + self.ServerIP + ":" + self.ServerPort + "/" + self.SoftVersion + "/Accounts/" + self.AccountSid + "/BillRecords?sig=" + sig
+        url = f"https://{self.ServerIP}:{self.ServerPort}/{self.SoftVersion}/Accounts/{self.AccountSid}/BillRecords?sig={sig}"
+
         # 生成auth
-        src = self.AccountSid + ":" + self.Batch
+        src = f"{self.AccountSid}:{self.Batch}"
         auth = base64.encodebytes(src.encode()).decode().strip()
         req = urllib2.Request(url)
         self.setHttpHeader(req)
@@ -517,9 +522,10 @@ class REST:
         signature = self.AccountSid + self.AccountToken + self.Batch
         sig = md5(signature.encode()).hexdigest().upper()
         # 拼接URL
-        url = "https://" + self.ServerIP + ":" + self.ServerPort + "/" + self.SoftVersion + "/Accounts/" + self.AccountSid + "/AccountInfo?sig=" + sig
+        url = f"https://{self.ServerIP}:{self.ServerPort}/{self.SoftVersion}/Accounts/{self.AccountSid}/AccountInfo?sig={sig}"
+
         # 生成auth
-        src = self.AccountSid + ":" + self.Batch
+        src = f"{self.AccountSid}:{self.Batch}"
         auth = base64.encodebytes(src.encode()).decode().strip()
         req = urllib2.Request(url)
         self.setHttpHeader(req)
@@ -558,9 +564,10 @@ class REST:
         signature = self.AccountSid + self.AccountToken + self.Batch
         sig = md5(signature.encode()).hexdigest().upper()
         # 拼接URL
-        url = "https://" + self.ServerIP + ":" + self.ServerPort + "/" + self.SoftVersion + "/Accounts/" + self.AccountSid + "/SMS/QuerySMSTemplate?sig=" + sig
+        url = f"https://{self.ServerIP}:{self.ServerPort}/{self.SoftVersion}/Accounts/{self.AccountSid}/SMS/QuerySMSTemplate?sig={sig}"
+
         # 生成auth
-        src = self.AccountSid + ":" + self.Batch
+        src = f"{self.AccountSid}:{self.Batch}"
         auth = base64.encodebytes(src.encode()).decode().strip()
         req = urllib2.Request(url)
         self.setHttpHeader(req)
@@ -608,9 +615,10 @@ class REST:
         signature = self.AccountSid + self.AccountToken + self.Batch
         sig = md5(signature.encode()).hexdigest().upper()
         # 拼接URL
-        url = "https://" + self.ServerIP + ":" + self.ServerPort + "/" + self.SoftVersion + "/Accounts/" + self.AccountSid + "/CallResult?sig=" + sig + "&callsid=" + callSid
+        url = f"https://{self.ServerIP}:{self.ServerPort}/{self.SoftVersion}/Accounts/{self.AccountSid}/CallResult?sig={sig}&callsid={callSid}"
+
         # 生成auth
-        src = self.AccountSid + ":" + self.Batch
+        src = f"{self.AccountSid}:{self.Batch}"
         auth = base64.encodebytes(src.encode()).decode().strip()
         req = urllib2.Request(url)
         self.setHttpHeader(req)
@@ -649,9 +657,10 @@ class REST:
         signature = self.AccountSid + self.AccountToken + self.Batch
         sig = md5(signature.encode()).hexdigest().upper()
         # 拼接URL
-        url = "https://" + self.ServerIP + ":" + self.ServerPort + "/" + self.SoftVersion + "/Accounts/" + self.AccountSid + "/ivr/call?sig=" + sig + "&callid=" + callid
+        url = f"https://{self.ServerIP}:{self.ServerPort}/{self.SoftVersion}/Accounts/{self.AccountSid}/ivr/call?sig={sig}&callid={callid}"
+
         # 生成auth
-        src = self.AccountSid + ":" + self.Batch
+        src = f"{self.AccountSid}:{self.Batch}"
         auth = base64.encodebytes(src.encode()).decode().strip()
         req = urllib2.Request(url)
         self.setHttpHeader(req)
@@ -700,19 +709,18 @@ class REST:
         signature = self.AccountSid + self.AccountToken + self.Batch
         sig = md5(signature.encode()).hexdigest().upper()
         # 拼接URL
-        url = "https://" + self.ServerIP + ":" + self.ServerPort + "/" + self.SoftVersion + "/Accounts/" + self.AccountSid + "/Calls/MediaFileUpload?sig=" + sig + "&appid=" + self.AppId + "&filename=" + filename
+        url = f"https://{self.ServerIP}:{self.ServerPort}/{self.SoftVersion}/Accounts/{self.AccountSid}/Calls/MediaFileUpload?sig={sig}&appid={self.AppId}&filename={filename}"
+
         # 生成auth
-        src = self.AccountSid + ":" + self.Batch
+        src = f"{self.AccountSid}:{self.Batch}"
         auth = base64.encodebytes(src.encode()).decode().strip()
         req = urllib2.Request(url)
         req.add_header("Authorization", auth)
         if self.BodyType == 'json':
             req.add_header("Accept", "application/json")
-            req.add_header("Content-Type", "application/octet-stream")
-
         else:
             req.add_header("Accept", "application/xml")
-            req.add_header("Content-Type", "application/octet-stream")
+        req.add_header("Content-Type", "application/octet-stream")
 
         # 创建包体
         req.data = body.encode()

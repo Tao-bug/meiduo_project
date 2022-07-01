@@ -28,9 +28,7 @@ def get_categories():
         # })
         # 构建当前类别的子类别
         for cat2 in cat1.subs.all():
-            cat2.sub_cats = []
-            for cat3 in cat2.subs.all():
-                cat2.sub_cats.append(cat3)
+            cat2.sub_cats = list(cat2.subs.all())
             categories[group_id]['sub_cats'].append(cat2)
 
     return categories

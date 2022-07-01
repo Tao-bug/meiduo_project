@@ -103,7 +103,7 @@ class SKU(BaseModel):
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        return '%s: %s' % (self.id, self.name)
+        return f'{self.id}: {self.name}'
 
 
 class SKUImage(BaseModel):
@@ -117,7 +117,7 @@ class SKUImage(BaseModel):
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        return '%s %s' % (self.sku.name, self.id)
+        return f'{self.sku.name} {self.id}'
 
 
 class SPUSpecification(BaseModel):
@@ -131,7 +131,7 @@ class SPUSpecification(BaseModel):
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        return '%s: %s' % (self.spu.name, self.name)
+        return f'{self.spu.name}: {self.name}'
 
 
 class SpecificationOption(BaseModel):
@@ -145,7 +145,7 @@ class SpecificationOption(BaseModel):
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        return '%s - %s' % (self.spec, self.value)
+        return f'{self.spec} - {self.value}'
 
 
 class SKUSpecification(BaseModel):
@@ -160,7 +160,7 @@ class SKUSpecification(BaseModel):
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        return '%s: %s - %s' % (self.sku, self.spec.name, self.option.value)
+        return f'{self.sku}: {self.spec.name} - {self.option.value}'
 
 
 class GoodsVisitCount(BaseModel):

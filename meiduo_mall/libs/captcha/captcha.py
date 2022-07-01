@@ -16,7 +16,7 @@ from PIL.ImageFont import truetype
 
 class Bezier:
     def __init__(self):
-        self.tsequence = tuple([t / 20.0 for t in range(21)])
+        self.tsequence = tuple(t / 20.0 for t in range(21))
         self.beziers = {}
 
     def pascal_row(self, n):
@@ -68,12 +68,18 @@ class Captcha(object):
 
     def initialize(self, width=200, height=75, color=None, text=None, fonts=None):
         # self.image = Image.new('RGB', (width, height), (255, 255, 255))
-        self._text = text if text else random.sample(string.ascii_uppercase + string.ascii_uppercase + '3456789', 4)
-        self.fonts = fonts if fonts else \
-            [os.path.join(self._dir, 'fonts', font) for font in ['Arial.ttf', 'Georgia.ttf', 'actionj.ttf']]
+        self._text = text or random.sample(
+            string.ascii_uppercase + string.ascii_uppercase + '3456789', 4
+        )
+
+        self.fonts = fonts or [
+            os.path.join(self._dir, 'fonts', font)
+            for font in ['Arial.ttf', 'Georgia.ttf', 'actionj.ttf']
+        ]
+
         self.width = width
         self.height = height
-        self._color = color if color else self.random_color(0, 200, random.randint(220, 255))
+        self._color = color or self.random_color(0, 200, random.randint(220, 255))
 
     @staticmethod
     def random_color(start, end, opacity=None):
@@ -100,11 +106,12 @@ class Captcha(object):
         path = [(dx * i, random.randint(0, height))
                 for i in range(1, number)]
         bcoefs = self._bezier.make_bezier(number - 1)
-        points = []
-        for coefs in bcoefs:
-            points.append(tuple(sum([coef * p for coef, p in zip(coefs, ps)])
-                                for ps in zip(*path)))
-        Draw(image).line(points, fill=color if color else self._color, width=width)
+        points = [
+            tuple(sum(coef * p for coef, p in zip(coefs, ps)) for ps in zip(*path))
+            for coefs in bcoefs
+        ]
+
+        Draw(image).line(points, fill=color or self._color, width=width)
         return image
 
     def noise(self, image, number=50, level=2, color=None):
@@ -114,17 +121,20 @@ class Captcha(object):
         dy = height / 10
         height -= dy
         draw = Draw(image)
-        for i in range(number):
+        for _ in range(number):
             x = int(random.uniform(dx, width))
             y = int(random.uniform(dy, height))
-            draw.line(((x, y), (x + level, y)), fill=color if color else self._color, width=level)
+            draw.line(((x, y), (x + level, y)), fill=color or self._color, width=level)
         return image
 
     def text(self, image, fonts, font_sizes=None, drawings=None, squeeze_factor=0.75, color=None):
-        color = color if color else self._color
-        fonts = tuple([truetype(name, size)
-                       for name in fonts
-                       for size in font_sizes or (65, 70, 75)])
+        color = color or self._color
+        fonts = tuple(
+            truetype(name, size)
+            for name in fonts
+            for size in font_sizes or (65, 70, 75)
+        )
+
         draw = Draw(image)
         char_images = []
         for c in self._text:

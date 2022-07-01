@@ -23,7 +23,5 @@ class SecretOauth(object):
     def loads(self, content_dict):
         # 1.根据 签名(secret_key) 创建序列化对象
         serializer = Serializer(secret_key=settings.SECRET_KEY, expires_in=24 * 15 * 60)
-        # 2. 通过 loads方法 解密数据
-        result = serializer.loads(content_dict)
         # 3. 返回解密完毕数据
-        return result
+        return serializer.loads(content_dict)
