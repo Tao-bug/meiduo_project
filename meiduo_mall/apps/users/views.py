@@ -25,7 +25,7 @@ class UserBrowseHistory(LoginRequiredMixin, View):
         """获取用户浏览记录"""
         # 获取Redis存储的sku_id列表信息
         redis_conn = get_redis_connection('history')
-        sku_ids = redis_conn.lrange('history_%s' % request.user.id, 0, -1)
+        sku_ids = redis_conn.lrange(f'history_{request.user.id}', 0, -1)
 
         # 根据sku_ids列表数据，查询出商品sku信息
         # skus = SKU.objects.filter(id__in=sku_ids)  # 自动升序，不符合顺序
@@ -54,7 +54,7 @@ class UserBrowseHistory(LoginRequiredMixin, View):
 
         # 3.如果有sku,保存到redis
         history_redis_client = get_redis_connection('history')
-        history_key = 'history_%s' % request.user.id
+        history_key = f'history_{request.user.id}'
 
         # 管道
         redis_pipeline = history_redis_client.pipeline()
@@ -144,12 +144,14 @@ class AddressCreateView(LoginRequiredMixin, View):
             return http.HttpResponseForbidden('缺少必传参数')
         if not re.match(r'^1[3-9]\d{9}$', mobile):
             return http.HttpResponseForbidden('参数mobile有误')
-        if tel:
-            if not re.match(r'^(0[0-9]{2,3}-)?([2-9][0-9]{6,7})+(-[0-9]{1,4})?$', tel):
-                return http.HttpResponseForbidden('参数tel有误')
-        if email:
-            if not re.match(r'^[a-z0-9][\w\.\-]*@[a-z0-9\-]+(\.[a-z]{2,5}){1,2}$', email):
-                return http.HttpResponseForbidden('参数email有误')
+        if tel and not re.match(
+            r'^(0[0-9]{2,3}-)?([2-9][0-9]{6,7})+(-[0-9]{1,4})?$', tel
+        ):
+            return http.HttpResponseForbidden('参数tel有误')
+        if email and not re.match(
+            r'^[a-z0-9][\w\.\-]*@[a-z0-9\-]+(\.[a-z]{2,5}){1,2}$', email
+        ):
+            return http.HttpResponseForbidden('参数email有误')
 
         # 保存地址信息
         try:
@@ -356,9 +358,7 @@ class LoginView(View):
             # 记住用户名, 浏览器会话保持两周
             request.session.set_expiry(None)
 
-        # next 获取
-        next = request.GET.get('next')
-        if next:
+        if next := request.GET.get('next'):
             response = redirect(reverse('users:info'))
 
         else:
@@ -439,7 +439,7 @@ class RegisterView(View):
         # 补充注册时短信验证后端逻辑
         from django_redis import get_redis_connection
         redis_code_client = get_redis_connection('sms_code')
-        redis_code = redis_code_client.get("sms_%s" % mobile)
+        redis_code = redis_code_client.get(f"sms_{mobile}")
 
         if redis_code is None:
             return http.HttpResponseForbidden('无效的短信验证码')

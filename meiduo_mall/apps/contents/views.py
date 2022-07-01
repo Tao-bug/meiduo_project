@@ -14,11 +14,11 @@ class IndexView(View):
         # 查询商品频道和分类
         categories = get_categories()
 
-        # 获取广告内容
-        contents = {}
         content_categories =ContentCategory.objects.all()
-        for cat in content_categories:
-            contents[cat.key] = cat.content_set.filter(status=True).order_by('sequence')
+        contents = {
+            cat.key: cat.content_set.filter(status=True).order_by('sequence')
+            for cat in content_categories
+        }
 
         # 渲染模板的上下文
         context = {

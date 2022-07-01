@@ -21,25 +21,23 @@ class CartsSimpleView(View):
             carts_data = client.hgetall(user.id)
             # 转换格式
             carts_dict = {int(k.decode()): json.loads(v.decode()) for k, v in carts_data.items()}
+        elif carts_str := request.COOKIES.get('carts'):
+            carts_dict = CookieSecret.loads(carts_str)
         else:
-            # 用户未登录，查询cookie购物车
-            carts_str = request.COOKIES.get('carts')
-            if carts_str:
-                carts_dict = CookieSecret.loads(carts_str)
-            else:
-                carts_dict = {}
+            carts_dict = {}
 
-        # 构造简单购物车JSON数据
-        cart_skus = []
         sku_ids = carts_dict.keys()
         skus = SKU.objects.filter(id__in=sku_ids)
-        for sku in skus:
-            cart_skus.append({
+        cart_skus = [
+            {
                 'id': sku.id,
                 'name': sku.name,
                 'count': carts_dict.get(sku.id).get('count'),
-                'default_image_url': sku.default_image.url
-            })
+                'default_image_url': sku.default_image.url,
+            }
+            for sku in skus
+        ]
+
         return http.JsonResponse({'code': 0, 'errmsg': 'OK', 'cart_skus': cart_skus})
 
 
@@ -52,9 +50,8 @@ class CartsSelectAllView(View):
         selected = json_dict.get('selected', True)
 
         # 校验参数
-        if selected:
-            if not isinstance(selected, bool):
-                return http.HttpResponseForbidden('参数selected有误')
+        if selected and not isinstance(selected, bool):
+            return http.HttpResponseForbidden('参数selected有误')
 
         # 判断用户是否登录
         user = request.user
@@ -111,9 +108,7 @@ class CartsView(View):
             # 删除结束后，没有响应的数据，只需要响应状态码即可
             return http.JsonResponse({'code': 0, 'errmsg': '删除购物车成功'})
         else:
-            # 用户未登录，删除cookie购物车
-            cart_str = request.COOKIES.get('carts')
-            if cart_str:
+            if cart_str := request.COOKIES.get('carts'):
                 # 解密
                 cart_dict = CookieSecret.loads(cart_str)
             else:
@@ -152,9 +147,8 @@ class CartsView(View):
         except Exception:
             return http.HttpResponseForbidden('参数count有误')
         # 判断selected是否为bool值
-        if selected:
-            if not isinstance(selected, bool):
-                return http.HttpResponseForbidden('参数selected有误')
+        if selected and not isinstance(selected, bool):
+            return http.HttpResponseForbidden('参数selected有误')
 
         # 判断是否登陆
         user = request.user
@@ -167,16 +161,10 @@ class CartsView(View):
             new_cart_dict = {'count': count, 'selected': selected}
             client.hset(user.id, sku_id, json.dumps(new_cart_dict))
 
-        # 未登录 -- cookie
         else:
             # 用户未登录，删除cookie购物车
             cart_str = request.COOKIES.get('carts')
-            if cart_str:
-                # 解密
-                cart_dict = CookieSecret.loads(cart_str)
-            else:
-                cart_dict = {}
-
+            cart_dict = CookieSecret.loads(cart_str) if cart_str else {}
             # 覆盖以前的数据
             cart_dict[sku_id] = {
                 'count': count,
@@ -221,28 +209,28 @@ class CartsView(View):
                 int(k.decode()): json.loads(v.decode()) for k, v in carts_data.items()
             }
 
+        elif cookie_str := request.COOKIES.get('carts'):
+            carts_dict = CookieSecret.loads(cookie_str)
         else:
-            # 从cookie取
-            cookie_str = request.COOKIES.get('carts')
-            # 判断有无---有---解密
-            if cookie_str:
-                carts_dict = CookieSecret.loads(cookie_str)
-            else:
-                carts_dict = {}
+            carts_dict = {}
 
         sku_ids = carts_dict.keys()
         skus = SKU.objects.filter(id__in=sku_ids)
-        cart_skus = []
-        for sku in skus:
-            cart_skus.append({
+        cart_skus = [
+            {
                 'id': sku.id,
                 'name': sku.name,
                 'count': carts_dict.get(sku.id).get('count'),
-                'selected': str(carts_dict.get(sku.id).get('selected')),  # 将True，转'True'，方便json解析
+                'selected': str(
+                    carts_dict.get(sku.id).get('selected')
+                ),  # 将True，转'True'，方便json解析
                 'default_image_url': sku.default_image.url,
                 'price': str(sku.price),  # 从Decimal('10.2')中取出'10.2'，方便json解析
                 'amount': str(sku.price * carts_dict.get(sku.id).get('count')),
-            })
+            }
+            for sku in skus
+        ]
+
         context = {
             'cart_skus': cart_skus,
         }
@@ -272,9 +260,8 @@ class CartsView(View):
         except Exception:
             return http.HttpResponseForbidden('参数count有误')
         # 判断selected是否为bool值
-        if selected:
-            if not isinstance(selected, bool):
-                return http.HttpResponseForbidden('参数selected有误')
+        if selected and not isinstance(selected, bool):
+            return http.HttpResponseForbidden('参数selected有误')
 
         # 判断用户是否登录
         user = request.user
@@ -300,14 +287,10 @@ class CartsView(View):
                 carts_redis_client.hset(user.id, sku_id, json.dumps({'count': count, 'selected': selected}))
                 return http.JsonResponse({'code': 0, 'errmsg': '添加购物车成功'})
         else:
-            # 用户未登录，操作cookie购物车
-            # 用户未登录，操作cookie购物车
-            cart_str = request.COOKIES.get('carts')
-            # 如果用户操作过cookie购物车
-            if cart_str:
+            if cart_str := request.COOKIES.get('carts'):
                 # 解密出明文
                 cart_dict = CookieSecret.loads(cart_str)
-            else:  # 用户从没有操作过cookie购物车
+            else:
                 cart_dict = {}
 
             # 判断要加入购物车的商品是否已经在购物车中,如有相同商品，累加求和，反之，直接赋值

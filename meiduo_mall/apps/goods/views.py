@@ -61,9 +61,7 @@ class DetailView(View):
 
         # 构建当前商品的规格键
         sku_specs = sku.specs.order_by('spec_id')
-        sku_key = []
-        for spec in sku_specs:
-            sku_key.append(spec.option.id)
+        sku_key = [spec.option.id for spec in sku_specs]
         # 获取当前商品的所有SKU
         skus = sku.spu.sku_set.all()
         # 构建不同规格参数（选项）的sku字典
@@ -72,9 +70,7 @@ class DetailView(View):
             # 获取sku的规格参数
             s_specs = s.specs.order_by('spec_id')
             # 用于形成规格参数-sku字典的键
-            key = []
-            for spec in s_specs:
-                key.append(spec.option.id)
+            key = [spec.option.id for spec in s_specs]
             # 向规格参数-sku字典添加记录
             spec_sku_map[tuple(key)] = s.id
         # 获取当前商品的规格信息
@@ -113,14 +109,15 @@ class HotView(View):
         skus = models.SKU.objects.filter(category_id=category_id, is_launched=True).order_by('-sales')[:2]
 
         # 序列化
-        hot_skus = []
-        for sku in skus:
-            hot_skus.append({
+        hot_skus = [
+            {
                 'id': sku.id,
                 'default_image_url': sku.default_image.url,
                 'name': sku.name,
-                'price': sku.price
-            })
+                'price': sku.price,
+            }
+            for sku in skus
+        ]
 
         return http.JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK', 'hot_skus': hot_skus})
 

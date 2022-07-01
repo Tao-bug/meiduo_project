@@ -18,7 +18,7 @@ class SMSCodeView(View):
         # 2.1 根据uuid 去redis数据库查询 图片验证码
         from django_redis import get_redis_connection
         image_redis_client = get_redis_connection('verify_image_code')
-        redis_img_code = image_redis_client.get('img_%s' % uuid)
+        redis_img_code = image_redis_client.get(f'img_{uuid}')
 
         # 判断服务器返回的验证
         if redis_img_code is None:
@@ -26,7 +26,7 @@ class SMSCodeView(View):
 
         # 如果有值 删除redis服务器上的图形验证码
         try:
-            image_redis_client.delete('img_%s' % uuid)
+            image_redis_client.delete(f'img_{uuid}')
         except Exception as e:
             logger.error(e)
 
@@ -57,13 +57,11 @@ class SMSCodeView(View):
 
         # 管道
         pipeline = sms_redis_client.pipeline()
-        pipeline.setex("sms_%s" % mobile, 300, sms_code)
-        pipeline.setex('send_flag%s' % mobile, 60, 1)
+        pipeline.setex(f"sms_{mobile}", 300, sms_code)
+        pipeline.setex(f'send_flag{mobile}', 60, 1)
         pipeline.execute()
 
-        # 获取redis里面的标识
-        send_sms_flag = sms_redis_client.get('send_flag%s' % mobile)
-        if send_sms_flag:
+        if send_sms_flag := sms_redis_client.get(f'send_flag{mobile}'):
             return http.HttpResponseForbidden({'发送短信过于频繁'})
         # 如果 倒计时标识 不在
         # 5.告诉前端短信发送完毕
@@ -87,7 +85,7 @@ class ImageCodeView(View):
         from django_redis import get_redis_connection
         redis_client = get_redis_connection('verify_image_code')
         from apps.verifications import constants
-        redis_client.setex('img_%s' % uuid, constants.IMAGE_CODE_REDIS_EXPIRES, text)
+        redis_client.setex(f'img_{uuid}', constants.IMAGE_CODE_REDIS_EXPIRES, text)
 
         # 响应图片验证码
         return http.HttpResponse(image, content_type='image/jpg')

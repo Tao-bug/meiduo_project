@@ -34,9 +34,7 @@ class PaymentStatusView(View):
             debug=settings.ALIPAY_DEBUG
         )
 
-        # 校验这个重定向是否是alipay重定向过来的
-        success = alipay.verify(data, signature)
-        if success:
+        if success := alipay.verify(data, signature):
             # 读取order_id
             order_id = data.get('out_trade_no')
             # 读取支付宝流水号
@@ -88,12 +86,13 @@ class PaymentView(View):
         order_string = alipay.api_alipay_trade_page_pay(
             out_trade_no=order_id,
             total_amount=str(order.total_amount),
-            subject="美多商城%s" % order_id,
+            subject=f"美多商城{order_id}",
             return_url=settings.ALIPAY_RETURN_URL,
         )
+
 
         # 响应登录支付宝连接
         # 真实环境电脑网站支付网关：https://openapi.alipay.com/gateway.do? + order_string
         # 沙箱环境电脑网站支付网关：https://openapi.alipaydev.com/gateway.do? + order_string
-        alipay_url = settings.ALIPAY_URL + "?" + order_string
+        alipay_url = f"{settings.ALIPAY_URL}?{order_string}"
         return http.JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK', 'alipay_url': alipay_url})

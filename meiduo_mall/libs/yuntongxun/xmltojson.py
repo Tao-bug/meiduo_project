@@ -19,11 +19,7 @@ class xmltojson:
         '''parse the XML file,and get the tree of the XML file
         finally,return the root element of the tree.
         if the XML file dose not exist,then print the information'''
-        # if os.path.exists(path):
-        # if SHOW_LOG:
-        # print('start to parse the file : [{}]'.format(path))
-        tree = ET.fromstring(path)
-        return tree
+        return ET.fromstring(path)
         # else:
         # print('the path [{}] dose not exist!'.format(path))
 
@@ -54,36 +50,28 @@ class xmltojson:
         '''return the element children if the element is not None.'''
         if element is not None:
 
-            return [c for c in element]
+            return list(element)
         else:
             print('the element is None!')
 
     def get_elements_tag(self, elements):
         '''return the list of tags of element's tag'''
         if elements is not None:
-            tags = []
-            for e in elements:
-                tags.append(e.tag)
-            return tags
+            return [e.tag for e in elements]
         else:
             print('the elements is None!')
 
     def get_elements_attrib(self, elements):
         '''return the list of attribs of element's attrib'''
         if elements is not None:
-            attribs = []
-            for a in elements:
-                attribs.append(a.attrib)
-            return attribs
+            return [a.attrib for a in elements]
         else:
             print('the elements is None!')
 
     def get_elements_text(self, elements):
         '''return the dict of element'''
         if elements is not None:
-            text = []
-            for t in elements:
-                text.append(t.text)
+            text = [t.text for t in elements]
             return dict(zip(self.get_elements_tag(elements), text))
         else:
             print('the elements is None!')
@@ -105,25 +93,23 @@ class xmltojson:
         for c in children:
             p = 0
             c_children = self.get_element_children(c)
-            dict_text = self.get_elements_text(c_children)
-            if dict_text:
+            if dict_text := self.get_elements_text(c_children):
                 # print (children_tags[i])
                 if children_tags[i] == 'TemplateSMS':
                     self.a['templateSMS'] = dict_text
-                else:
-                    if children_tags[i] == 'SubAccount':
-                        k = 0
+                elif children_tags[i] == 'SubAccount':
+                    k = 0
 
-                        for x in children:
-                            if children_tags[k] == 'totalCount':
-                                self.m.append(dict_text)
-                                self.a['SubAccount'] = self.m
-                                p = 1
-                            k = k + 1
-                        if p == 0:
-                            self.a[children_tags[i]] = dict_text
-                    else:
+                    for x in children:
+                        if children_tags[k] == 'totalCount':
+                            self.m.append(dict_text)
+                            self.a['SubAccount'] = self.m
+                            p = 1
+                        k = k + 1
+                    if p == 0:
                         self.a[children_tags[i]] = dict_text
+                else:
+                    self.a[children_tags[i]] = dict_text
 
 
             else:
@@ -148,8 +134,7 @@ class xmltojson:
         for c in children:
             p = 0
             c_children = self.get_element_children(c)
-            dict_text = self.get_elements_text(c_children)
-            if dict_text:
+            if dict_text := self.get_elements_text(c_children):
                 if children_tags[i] == 'TemplateSMS':
                     k = 0
 

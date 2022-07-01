@@ -38,10 +38,7 @@ def generate_verify_email_url(user):
     from utils.secret import SecretOauth
     secret_data = SecretOauth().dumps(dict_data)
 
-    # 3.拼接 完整的路由
-    verify_url = settings.EMAIL_ACTIVE_URL + '?token=' + secret_data
-
-    return verify_url
+    return f'{settings.EMAIL_ACTIVE_URL}?token={secret_data}'
 
 
 # 封装函数
